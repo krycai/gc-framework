@@ -1,26 +1,36 @@
 package com.allen.sys.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.allen.sys.mapper.SysMenuMapper;
 import com.allen.sys.mapper.SysRoleMapper;
 import com.allen.sys.mapper.SysUserMapper;
+import com.allen.sys.mapper.SysUserRoleMapper;
+import com.allen.sys.model.dto.LoginForm;
 import com.allen.sys.model.dto.SysUserRoleDto;
+import com.allen.sys.model.dto.UserParam;
+import com.allen.sys.model.dto.UserRoleForm;
+import com.allen.sys.model.po.SysMenu;
+import com.allen.sys.model.po.SysRole;
+import com.allen.sys.model.po.SysUser;
+import com.allen.sys.model.po.SysUserRole;
 import com.allen.sys.service.SystemService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
+import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: allen小哥 2020-04-14 11:19
  **/
+@Slf4j
 @Service
 @Transactional(readOnly = false)
 public class SystemServiceImpl implements SystemService {
@@ -30,7 +40,6 @@ public class SystemServiceImpl implements SystemService {
      */
     @Autowired
     private SysUserMapper sysUserMapper;
-
     /**
      * 系统菜单Mapper
      */
@@ -41,13 +50,27 @@ public class SystemServiceImpl implements SystemService {
      */
     @Autowired
     private SysRoleMapper sysRoleMapper;
-
     @Autowired
-    private RedisTemplate redisTemplate;
+    SysUserRoleMapper userRoleMapper;
+
+    @Override
+    public SysUser ssoLogin(LoginForm loginForm) {
+        String md5Pwd = DigestUtils.md5DigestAsHex(loginForm.getPassword().getBytes());
+        log.info("加密后的密码为:{}",md5Pwd);
+        SysUser sysUser = sysUserMapper.ssoLogin(loginForm.getLoginName(), md5Pwd);
+        return sysUser;
+    }
+
+    @Override
+    public SysUser getUserMsgByToken(String token) {
+        return sysUserMapper.getUserMsgByToken(token);
+    }
 
     @Override
     public SysUser getUserByLoginName(String loginName) {
-        SysUser user = sysUserMapper.getByLoginName(loginName);
+        SysUser sysUser =new SysUser();
+        sysUser.setLoginName(loginName);
+        SysUser user = sysUserMapper.selectOne(sysUser);
         if (user == null) {
             return null;
         }
@@ -66,8 +89,7 @@ public class SystemServiceImpl implements SystemService {
      */
     @Override
     public SysUser getSsoLoginUserByLoginAccount(String loginAccount) throws Exception {
-        SysUser sysUser = new SysUser();
-        sysUser.setEnabled(true);
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(loginAccount);
         sysUser = convertSysUser(sysUser, Integer.parseInt(loginAccount));
         return sysUser;
     }
@@ -82,8 +104,10 @@ public class SystemServiceImpl implements SystemService {
         sysUser.setRoles(roles);
         List<SysMenu> menuList;
         //超级管理员
-        if (SysUser.ADMIN_USER_ID.equals(userId)) {
-            menuList = sysMenuMapper.findAllList();
+        if (sysUser.getAdminFlag()) {
+            SysMenu menu = new SysMenu();
+            menu.setDelFlag(false);
+            menuList = sysMenuMapper.select(menu);
         } else {
             menuList = sysMenuMapper.findListByUserId(userId);
         }
@@ -93,28 +117,29 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public PageInfo<SysUser> findUserPage(Paging page, SysUser user) {
+    public PageInfo<SysUser> findUserPage(UserParam param) {
         // 执行分页查询
-        PageHelper.startPage(page.getPageNum(), page.getPageSize(), page.getOrderBy());
-        List<SysUser> list = sysUserMapper.findList(user);
+        PageHelper.startPage(param.getPageNum(), param.getPageSize(), param.getOrderBy());
+        List<SysUser> list = sysUserMapper.findUserPage(param.getName(),param.getLoginName());
         return new PageInfo<>(list);
     }
 
     @Override
     public SysUser getUserById(Integer userId) {
-        return sysUserMapper.get(Long.valueOf(userId));
+        return sysUserMapper.selectByPrimaryKey(userId);
     }
 
     @Override
     @Transactional(readOnly = false)
     public SysUser saveUser(SysUser user) {
         if ( user.getId() == null ) {
-            user.preInsert();
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
             sysUserMapper.insert(user);
         } else {
             // 更新用户数据
-            user.preUpdate();
-            sysUserMapper.update(user);
+            user.setUpdateTime(new Date());
+            sysUserMapper.updateByPrimaryKeySelective(user);
         }
 
         return user;
@@ -124,14 +149,17 @@ public class SystemServiceImpl implements SystemService {
     @Transactional(readOnly = false)
     public void updateUserInfo(SysUser user) {
         // 更新用户数据
-        user.preUpdate();
-        sysUserMapper.updateInfo(user);
+        user.setUpdateTime(new Date());
+        sysUserMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
     @Transactional(readOnly = false)
     public void deleteUserById(Integer userId) {
-        sysUserMapper.deleteById(Long.parseLong(userId.toString()));
+        SysUser user = new SysUser();
+        user.setId(userId);
+        user.setDelFlag(true);
+        sysUserMapper.updateByPrimaryKeySelective(user);
         //删除用户对应的角色信息
         sysUserMapper.deleteUserRole(userId);
     }
@@ -142,18 +170,20 @@ public class SystemServiceImpl implements SystemService {
         SysUser user = new SysUser();
         user.setId(userId);
         user.setPassword(newPassword);
-        sysUserMapper.updatePasswordById(user);
+        sysUserMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
-    public List<SysRole> getUserRoleByUserId(int userId) {
+    public List<SysRole> getUserRoleByUserId(Integer userId) {
         return sysUserMapper.getUserRoleByUserId(userId);
     }
 
     @Override
-    public void saveUserRole(SysUserRoleDto userRoleDto) {
+    public void saveUserRole(UserRoleForm userRoleDto) {
         // 删除原来的权限
-        sysUserMapper.deleteUserRole(userRoleDto.getUserId());
+        Example example = new Example(SysUserRole.class);
+        example.createCriteria().andEqualTo("userId",userRoleDto.getUserId());
+        userRoleMapper.deleteByExample(example);
         if (StrUtil.isBlank(userRoleDto.getRoleId())){
             return;
         }
@@ -163,7 +193,7 @@ public class SystemServiceImpl implements SystemService {
             sysUserRole = new SysUserRole();
             sysUserRole.setUserId(userRoleDto.getUserId());
             sysUserRole.setRoleId(Integer.valueOf(roleId));
-            sysUserMapper.saveUserRole(sysUserRole);
+            userRoleMapper.insertSelective(sysUserRole);
         }
     }
 
@@ -176,64 +206,64 @@ public class SystemServiceImpl implements SystemService {
 		 * 3、当连续到某次登陆与缓存中的第一次登录时间大于1分钟时，失效该缓存重新记录缓存
 		 * 4、如果连续超过5次的登陆都集中在1分钟内时，锁定该用户15分钟之内不可登陆
 		 */
-		if( redisRepository.exists("lock_user_" + account) ){
-			//可以拿到锁定的时间
-			String lockTime = redisRepository.get("lock_user_" + account);
-			long time = Long.parseLong(lockTime);
-			long nowTime = System.currentTimeMillis();
-			float exeTime = (float)(nowTime - time)/60000;
-			int seco = (int) exeTime;
-			int count = 15 -seco;
-			if( count == 0 ){
-				count = 1;
-			}
-			map.put("isSuccess", false);
-			map.put("responseMsg", "您的账号由于登陆过于频繁，已经被系统锁定，请" + count + "分钟之后再试");
-		}else{
-			//检查系统是否存在当前用户登陆的次数限制
-			if( redisRepository.exists("count_user_login_" + account)){
-				String countUserLogin = redisRepository.get("count_user_login_" + account);
-				List<Long> list = new ArrayList<Long>();
-				JSONArray jsonArray = JSONArray.parseArray(countUserLogin);
-				list = (List<Long>) JSONArray.parseArray(jsonArray.toJSONString(), Long.class);
-				//获取第一次登陆的时间
-				long firstTime = list.get(0);
-				long nowTime = System.currentTimeMillis();
-				float exeTime = (float)(nowTime - firstTime)/1000;
-				int seco = (int) exeTime/60;
-				int count = 15 -seco;
-				if( count == 0 ){
-					count = 1;
-				}
-				//如果当前时间与第一次登陆时间的时间差大于1分钟
-				if( exeTime > 60 ){
-					redisRepository.del("count_user_login_" + account);
-					map.put("isSuccess", true);
-					map.put("responseMsg", "检验成功");
-				}else{
-					//检查当前list里面的登陆次数
-					if( list.size() < 5 ){
-						list.add(nowTime);
-						redisRepository.setExpire("count_user_login_" + account, list.toString(), 60);
-						map.put("isSuccess", true);
-						map.put("responseMsg", "检验成功");
-					}else{
-						redisRepository.setExpire("lock_user_" + account, nowTime+"", 900);
-						map.put("isSuccess", false);
-						map.put("responseMsg", "您的账号由于登陆过于频繁，已经被系统锁定，请" + count + "分钟之后再试");
-					}
-				}
-			}else{
-				//存入当前登陆时间
-				List<Long> list = new ArrayList<Long>();
-				long nowTime = System.currentTimeMillis();
-				list.add(nowTime);
-				redisRepository.setExpire("count_user_login_" + account, list.toString(), 60);
-
-				map.put("isSuccess", true);
-				map.put("responseMsg", "检验成功");
-			}
-		}
+//		if( redisRepository.exists("lock_user_" + account) ){
+//			//可以拿到锁定的时间
+//			String lockTime = redisRepository.get("lock_user_" + account);
+//			long time = Long.parseLong(lockTime);
+//			long nowTime = System.currentTimeMillis();
+//			float exeTime = (float)(nowTime - time)/60000;
+//			int seco = (int) exeTime;
+//			int count = 15 -seco;
+//			if( count == 0 ){
+//				count = 1;
+//			}
+//			map.put("isSuccess", false);
+//			map.put("responseMsg", "您的账号由于登陆过于频繁，已经被系统锁定，请" + count + "分钟之后再试");
+//		}else{
+//			//检查系统是否存在当前用户登陆的次数限制
+//			if( redisRepository.exists("count_user_login_" + account)){
+//				String countUserLogin = redisRepository.get("count_user_login_" + account);
+//				List<Long> list = new ArrayList<Long>();
+//				JSONArray jsonArray = JSONArray.parseArray(countUserLogin);
+//				list = (List<Long>) JSONArray.parseArray(jsonArray.toJSONString(), Long.class);
+//				//获取第一次登陆的时间
+//				long firstTime = list.get(0);
+//				long nowTime = System.currentTimeMillis();
+//				float exeTime = (float)(nowTime - firstTime)/1000;
+//				int seco = (int) exeTime/60;
+//				int count = 15 -seco;
+//				if( count == 0 ){
+//					count = 1;
+//				}
+//				//如果当前时间与第一次登陆时间的时间差大于1分钟
+//				if( exeTime > 60 ){
+//					redisRepository.del("count_user_login_" + account);
+//					map.put("isSuccess", true);
+//					map.put("responseMsg", "检验成功");
+//				}else{
+//					//检查当前list里面的登陆次数
+//					if( list.size() < 5 ){
+//						list.add(nowTime);
+//						redisRepository.setExpire("count_user_login_" + account, list.toString(), 60);
+//						map.put("isSuccess", true);
+//						map.put("responseMsg", "检验成功");
+//					}else{
+//						redisRepository.setExpire("lock_user_" + account, nowTime+"", 900);
+//						map.put("isSuccess", false);
+//						map.put("responseMsg", "您的账号由于登陆过于频繁，已经被系统锁定，请" + count + "分钟之后再试");
+//					}
+//				}
+//			}else{
+//				//存入当前登陆时间
+//				List<Long> list = new ArrayList<Long>();
+//				long nowTime = System.currentTimeMillis();
+//				list.add(nowTime);
+//				redisRepository.setExpire("count_user_login_" + account, list.toString(), 60);
+//
+//				map.put("isSuccess", true);
+//				map.put("responseMsg", "检验成功");
+//			}
+//		}
 		return map;
 	}
 }

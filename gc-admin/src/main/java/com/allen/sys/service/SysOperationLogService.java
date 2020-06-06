@@ -1,6 +1,7 @@
 package com.allen.sys.service;
 
 import com.allen.sys.model.dto.LogParamDto;
+import com.allen.sys.model.po.SysOperationLog;
 import com.github.pagehelper.PageInfo;
 
 /**

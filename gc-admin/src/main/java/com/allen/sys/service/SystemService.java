@@ -1,15 +1,15 @@
 package com.allen.sys.service;
 
-import cn.com.bluemoon.mybatis.api.Paging;
-import cn.com.bluemoon.qy.pojo.dto.SysUserRoleDto;
-import cn.com.bluemoon.qy.pojo.po.SysRole;
-import cn.com.bluemoon.qy.pojo.po.SysUser;
+import com.allen.sys.model.dto.LoginForm;
 import com.allen.sys.model.dto.SysUserRoleDto;
+import com.allen.sys.model.dto.UserParam;
+import com.allen.sys.model.dto.UserRoleForm;
+import com.allen.sys.model.po.SysRole;
+import com.allen.sys.model.po.SysUser;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * @author xuguocai 2020/6/1 10:43
@@ -36,11 +36,10 @@ public interface SystemService {
     /**
      * 查询用户列表
      *
-     * @param page 分页信息
-     * @param user 用户
+     * @param param 用户
      * @return 分页数据 page info
      */
-    PageInfo<SysUser> findUserPage(Paging page, SysUser user);
+    PageInfo<SysUser> findUserPage(UserParam param);
 
     /**
      * 查询用户
@@ -86,14 +85,14 @@ public interface SystemService {
      * @param userId
      * @return
      */
-    List<SysRole> getUserRoleByUserId(int userId);
+    List<SysRole> getUserRoleByUserId(Integer userId);
 
     /**
      * 增加授权信息
      *
-     * @param userRoleDto
+     * @param userRoleForm
      */
-    void saveUserRole(SysUserRoleDto userRoleDto);
+    void saveUserRole(UserRoleForm userRoleForm);
 
     /**
      * 用户一定时间内登录次数限制
@@ -102,4 +101,18 @@ public interface SystemService {
      * @return
      */
     Map<String, Object> userLoginLimit(String account);
+
+    /**
+     * 登录
+     * @param loginForm
+     */
+    SysUser ssoLogin(LoginForm loginForm);
+
+    /**
+     * 获取登录信息
+     * @param token
+     * @return
+     */
+    SysUser getUserMsgByToken(String token);
+
 }

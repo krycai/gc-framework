@@ -1,13 +1,19 @@
 package com.allen.sys.service.impl;
 
-import cn.com.bluemoon.mybatis.api.Paging;
-import cn.com.bluemoon.qy.pojo.dto.SysRoleFormDto;
 import com.allen.sys.mapper.SysMenuMapper;
 import com.allen.sys.mapper.SysRoleMapper;
 import com.allen.sys.mapper.SysRoleMenuMapper;
 import com.allen.sys.mapper.SysUserRoleMapper;
+import com.allen.sys.model.dto.SysRoleFormDto;
+import com.allen.sys.model.dto.roleParam;
+import com.allen.sys.model.po.SysMenu;
+import com.allen.sys.model.po.SysRole;
+import com.allen.sys.model.po.SysRoleMenu;
+import com.allen.sys.model.po.SysUserRole;
 import com.allen.sys.model.vo.SysRoleVo;
+import com.allen.sys.model.vo.SysUserRoleVo;
 import com.allen.sys.service.SysRoleService;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.springframework.beans.BeanUtils;
@@ -44,22 +50,22 @@ public class SysRoleServiceImpl implements SysRoleService {
     private SysUserRoleMapper userRoleMapper;
 
     @Override
-    public PageInfo<SysRole> findRolePage() {
+    public PageInfo<SysRole> findRolePage(roleParam param) {
         // 执行分页查询
-//        PageHelper.startPage(page.getPageNum(), page.getPageSize(), page.getOrderBy());
-//        List<SysRole> list = sysRoleMapper.findRolePage(role.getName(),role.getCode());
+        PageHelper.startPage(param.getPageNum(), param.getPageSize(), param.getOrderBy());
+        List<SysRole> list = sysRoleMapper.findRolePage(param.getName(),param.getCode());
         return new PageInfo<>(list);
     }
 
     @Override
     public List<SysRole> findAllRoleList() {
-        return sysRoleMapper.findAllList();
+        return sysRoleMapper.selectAll();
     }
 
     @Override
     public SysRoleVo getRoleById(Integer roleId) {
         SysRoleVo roleVo = new SysRoleVo();
-        SysRole role = sysRoleMapper.get(Long.valueOf(roleId));
+        SysRole role = sysRoleMapper.selectByPrimaryKey(roleId);
         BeanUtils.copyProperties(role,roleVo);
 
         SysRoleMenu sysRoleMenu = new SysRoleMenu();
@@ -72,33 +78,33 @@ public class SysRoleServiceImpl implements SysRoleService {
             SysRoleMenu roleMenu = null;
             for (SysMenu sysMenu :sysMenus){
                 roleMenu = new SysRoleMenu();
-                roleMenu.setMenuId(sysMenu.getId());
-                roleMenu.setRoleId(roleId);
+                roleMenu.setMenuId(String.valueOf(sysMenu.getId()));
+                roleMenu.setRoleId(String.valueOf(roleId));
                 list.add(roleMenu);
             }
         }
         else if (role != null && !role.getCode().equals("ROLE_ADMIN")) {
-            sysRoleMenu.setRoleId(role.getId());
-            list = roleMenuMapper.findList(sysRoleMenu);
+            sysRoleMenu.setRoleId(String.valueOf(role.getId()));
+            list = roleMenuMapper.select(sysRoleMenu);
         }
         roleVo.setRoleMenus(list);
 
         return roleVo;
     }
 
-
     @Override
     public SysRole saveRole(SysRoleFormDto formDto) {
         SysRole role = new SysRole();
         BeanUtils.copyProperties(formDto,role);
         if ( role.getId() == null ) {
-            role.preInsert();
+            role.setCreateTime(new Date());
+            role.setUpdateTime(new Date());
             sysRoleMapper.insert(role);
         } else {
             // 更新角色数据
-            role.preUpdate();
-            sysRoleMapper.update(role);
-            roleMenuMapper.deleteById(role.getId());
+            role.setUpdateTime(new Date());
+            sysRoleMapper.updateByPrimaryKeySelective(role);
+            roleMenuMapper.deleteByPrimaryKey(role.getId());
         }
 
         // 处理角色与菜单关联
@@ -107,8 +113,8 @@ public class SysRoleServiceImpl implements SysRoleService {
             SysRoleMenu roleMenu = null;
             for (String menuId : menuIds){
                 roleMenu = new SysRoleMenu();
-                roleMenu.setRoleId(role.getId());
-                roleMenu.setMenuId(Integer.valueOf(menuId));
+                roleMenu.setRoleId(String.valueOf(role.getId()));
+                roleMenu.setMenuId(menuId);
                 roleMenuMapper.insert(roleMenu);
             }
         }
@@ -120,8 +126,8 @@ public class SysRoleServiceImpl implements SysRoleService {
         SysRole sysRole = new SysRole();
         sysRole.setId(roleId);
         sysRole.setDelFlag(true);
-        sysRole.setOpTime(new Date());
-        sysRoleMapper.updateEntity(sysRole);
+        sysRole.setUpdateTime(new Date());
+        sysRoleMapper.updateByPrimaryKeySelective(sysRole);
     }
 
     @Override
@@ -146,4 +152,5 @@ public class SysRoleServiceImpl implements SysRoleService {
             return i;
         }
     }
+
 }

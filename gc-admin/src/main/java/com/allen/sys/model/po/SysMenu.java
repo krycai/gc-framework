@@ -1,7 +1,9 @@
 package com.allen.sys.model.po;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_menu")
 public class SysMenu {
@@ -32,7 +34,7 @@ public class SysMenu {
     /**
      * 排序
      */
-    private Long sort;
+    private Integer sort;
 
     /**
      * 链接
@@ -87,6 +89,11 @@ public class SysMenu {
      */
     @Column(name = "del_flag")
     private Boolean delFlag;
+
+    /**
+     * 子节点
+     */
+    private List<SysMenu> children = new ArrayList<>();
 
     /**
      * 获取编号
@@ -165,7 +172,7 @@ public class SysMenu {
      *
      * @return sort - 排序
      */
-    public Long getSort() {
+    public Integer getSort() {
         return sort;
     }
 
@@ -174,7 +181,7 @@ public class SysMenu {
      *
      * @param sort 排序
      */
-    public void setSort(Long sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
@@ -354,5 +361,30 @@ public class SysMenu {
      */
     public void setDelFlag(Boolean delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public Boolean getShow() {
+        return isShow;
+    }
+
+    public void setShow(Boolean show) {
+        isShow = show;
+    }
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param node 菜单节点
+     */
+    public void addChild(SysMenu node) {
+        this.children.add(node);
     }
 }

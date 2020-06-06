@@ -3,6 +3,8 @@ package com.allen.sys.aop;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.allen.sys.annotation.MethodLog;
+import com.allen.sys.model.po.SysOperationLog;
+import com.allen.sys.model.po.SysUser;
 import com.allen.sys.service.SysOperationLogService;
 import com.google.common.collect.Maps;
 import org.aspectj.lang.JoinPoint;
@@ -37,7 +39,7 @@ public class OperateLogAspect {
     @Autowired
     private SysOperationLogService sysOperationLogService;
 
-    @After(value = "execution (* cn.com.bluemoon.qy.controller..*.*(..))") //指定切点,使用after 让该切面在方法执行完成后切入
+    @After(value = "execution (* com.allen.sys.controller..*.*(..))") //指定切点,使用after 让该切面在方法执行完成后切入
     public void after(JoinPoint point) throws Throwable {
         try {
             // 拦截的action方法上面的标记是否包含 MethodLog 的注解
@@ -57,6 +59,9 @@ public class OperateLogAspect {
             }
             //根据缓存获取当前用户信息
             SysUser loginUserDetails = new SysUser();
+            loginUserDetails.setId(1);
+            loginUserDetails.setLoginName("sysadmin");
+            loginUserDetails.setName("admin");
             if (loginUserDetails == null) {
                 log.error("未从缓存中获取到员工信息,直接返回");
                 return;

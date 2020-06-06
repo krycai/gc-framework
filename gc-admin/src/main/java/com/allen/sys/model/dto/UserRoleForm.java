@@ -3,20 +3,20 @@ package com.allen.sys.model.dto;
 import java.io.Serializable;
 
 /**
- * @author xuguocai 2020/4/15 15:22
- */
-public class SysUserRoleDto implements Serializable {
+ * @author: allen小哥 2020-06-06 07:58
+ **/
+public class UserRoleForm implements Serializable {
     private static final long serialVersionUID = 7893568289633215087L;
 
-    private String userId;
+    private Integer userId;
     //角色ID
     private String roleId;
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

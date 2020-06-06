@@ -1,13 +1,11 @@
 package com.allen.sys.model.dto;
 
-import cn.com.bluemoon.mybatis.api.Paging;
-
-import java.io.Serializable;
+import com.allen.sys.common.PageParam;
 
 /**
  * @author xuguocai 2020/5/29 13:33
  */
-public class LogParamDto implements Serializable {
+public class LogParamDto extends PageParam {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -34,11 +32,6 @@ public class LogParamDto implements Serializable {
      * 结束时间
      */
     private String endTime;
-
-    /**
-     * 分页参数
-     */
-    private Paging page;
 
     public String getUserName() {
         return userName;
@@ -80,24 +73,14 @@ public class LogParamDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public Paging getPage() {
-        return page;
-    }
-
-    public void setPage(Paging page) {
-        this.page = page;
-    }
-
     @Override
     public String toString() {
         return "LogParamDto{" +
                 "userName='" + userName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", interfaceName='" + interfaceName + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", page=" + page +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
                 '}';
     }
-
 }

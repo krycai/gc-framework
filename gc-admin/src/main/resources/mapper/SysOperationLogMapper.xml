@@ -18,4 +18,35 @@
     <result column="message" property="message" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <sql id="valueColumns">
+                    t.id,                     t.user_name,                     t.user_id,                     t.oper_content,                     t.oper_level,                     t.oper_type,                     t.oper_method,                     t.oper_params,                     t.oper_ip,                     t.message,                     t.create_time        	</sql>
+
+  <sql id="params">
+    <if test="param.userName != null and param.userName != ''">
+      and t.`user_name` like concat("%",#{param.userName},"%")
+    </if>
+    <if test="param.userId != null and param.userId != ''">
+      and t.`user_id` like concat("%",#{param.userId},"%")
+    </if>
+    <if test="param.interfaceName != null and param.interfaceName != ''">
+      and t.`oper_content` like concat("%",#{param.interfaceName},"%")
+    </if>
+    <if test="param.startTime != null and param.startTime != ''">
+      <![CDATA[ and t.create_time >= #{param.startTime} ]]>
+    </if>
+    <if test="param.endTime != null and param.endTime != ''">
+      <![CDATA[ and t.create_time <= #{param.endTime } ]]>
+    </if>
+  </sql>
+
+  <select id="findPage" resultMap="BaseResultMap">
+    select
+    <include refid="valueColumns"></include>
+    from sys_operation_log t
+    <where>
+      <include refid="params"></include>
+    </where>
+    ORDER BY t.create_time DESC
+  </select>
 </mapper>

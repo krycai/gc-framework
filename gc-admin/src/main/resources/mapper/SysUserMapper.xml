@@ -5,42 +5,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="level" jdbcType="INTEGER" property="level" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="photo" jdbcType="VARCHAR" property="photo" />
-    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
-    <result column="login_date" jdbcType="TIMESTAMP" property="loginDate" />
-    <result column="enabled" jdbcType="BIT" property="enabled" />
-    <result column="is_role_assigned" jdbcType="BIT" property="isRoleAssigned" />
-    <result column="is_resource_assigned" jdbcType="BIT" property="isResourceAssigned" />
-    <result column="del_flag" jdbcType="BIT" property="delFlag" />
-    <result column="duty" jdbcType="VARCHAR" property="duty" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
-    <result column="is_pki_user" jdbcType="BIT" property="isPkiUser" />
-    <result column="mac" jdbcType="VARCHAR" property="mac" />
-    <result column="is_admin" jdbcType="BIT" property="isAdmin" />
-    <result column="skin" jdbcType="VARCHAR" property="skin" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <resultMap id="BaseResultMap" type="com.allen.sys.model.po.SysUser">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="login_name" jdbcType="VARCHAR" property="loginName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="admin_flag" jdbcType="BIT" property="adminFlag" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -51,4 +19,61 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="del_flag" jdbcType="BIT" property="delFlag" />
   </resultMap>
+
+  <!-- 查询有效数据列表，可分页查询 -->
+  <select id="findUserPage" resultMap="BaseResultMap">
+    select
+      a.*
+    from sys_user a
+    WHERE a.del_flag = '0'
+    <if test="loginName != null and loginName != ''">
+      AND a.login_name like CONCAT('%', #{loginName}, '%')
+    </if>
+    <if test="name != null and name != ''">
+      AND a.name like CONCAT('%', #{name}, '%')
+    </if>
+    order by a.create_time desc
+  </select>
+
+  <!-- 删除用户和角色关联表数据 -->
+  <delete id="deleteUserRole">
+        DELETE FROM sys_user_role
+        WHERE user_id = #{userId}
+    </delete>
+
+  <select id="getUserRoleByUserId" resultType="com.allen.sys.model.po.SysRole">
+    	SELECT
+			b.id,
+			b.name,
+			b.code,
+			b.enabled,
+			b.remarks
+		FROM
+			sys_user_role a
+		INNER JOIN sys_role b ON a.role_id = b.id and b.del_flag = '0'
+		WHERE
+			a.user_id = #{userId}
+    </select>
+
+    <select id="ssoLogin" resultMap="BaseResultMap">
+    	SELECT
+			a.*
+		FROM
+			sys_user a
+		WHERE
+		  a.del_flag = 0
+		  and a.login_name = #{loginName}
+		  and a.password = #{password}
+    </select>
+
+    <select id="getUserMsgByToken" resultMap="BaseResultMap">
+    	SELECT
+			a.*
+		FROM
+			sys_user a , sys_user_login l
+		WHERE
+		  a.del_flag = 0 and l.user_id = a.id
+		  and l.token = #{token}
+    </select>
+
 </mapper>

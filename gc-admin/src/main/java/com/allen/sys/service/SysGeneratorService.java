@@ -1,8 +1,8 @@
 package com.allen.sys.service;
 
-
-import cn.com.bluemoon.qy.pojo.dto.GeneratorDto;
 import com.allen.sys.model.dto.FormCodeDto;
+import com.allen.sys.model.dto.GeneratorParam;
+import com.allen.sys.model.po.SysTable;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface SysGeneratorService {
 
     List<Map<String, String>> queryColumns(String tableName);
 
-    PageInfo<SysTable> findTablePage(GeneratorDto generatorDto);
+    PageInfo<SysTable> findTablePage(GeneratorParam param);
 
     /**
      * 生成代码

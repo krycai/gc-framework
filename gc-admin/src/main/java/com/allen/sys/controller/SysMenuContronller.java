@@ -1,14 +1,15 @@
 package com.allen.sys.controller;
 
-import cn.com.bluemoon.common.web.security.WebUtils;
-import cn.com.bluemoon.qy.pojo.dto.AuthUser;
 import com.alibaba.fastjson.JSONObject;
 import com.allen.sys.annotation.MethodLog;
+import com.allen.sys.common.ResponseBean;
+import com.allen.sys.common.ResponseBeanUtil;
+import com.allen.sys.constants.ResponseCodeEnum;
+import com.allen.sys.model.po.SysMenu;
+import com.allen.sys.model.po.SysUser;
 import com.allen.sys.model.vo.SysMenuVo;
-import com.allen.sys.result.ResponseBean;
-import com.allen.sys.result.ResponseBeanUtil;
-import com.allen.sys.result.ResponseCodeEnum;
 import com.allen.sys.service.SysMenuService;
+import com.allen.sys.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +38,15 @@ public class SysMenuContronller {
     @GetMapping(value = "/menu/nav")
     public ResponseBean getMenuNav() {
         JSONObject result = new JSONObject();
-        AuthUser user = WebUtils.getCurrentUser();
+        //SysUseSysUser sysUser = new SysUser();
+        //        sysUser.setAdminFlag(true);
+        //        sysUser.setId(1);r sysUser = ThreadLocalUtil.get();
+        SysUser sysUser = new SysUser();
+        sysUser.setAdminFlag(true);
+        sysUser.setId(1);
+        System.out.println("==="+sysUser);
         //获取菜单原始数据
-        List<SysMenu> oldList = sysMenuService.getMenuListByUserId(user.getId());
+        List<SysMenu> oldList = sysMenuService.getMenuListByUserId(sysUser);
         //构建菜单树
         List<SysMenu> menuList = sysMenuService.makeTree(oldList, true);
         //获取菜单中的权限标识
@@ -51,7 +58,7 @@ public class SysMenuContronller {
         }
         result.put("menus", menuList);
         result.put("permission", perSet);
-        return ResponseBeanUtil.createScBean(result);
+        return ResponseBeanUtil.ok(result);
     }
 
     /**
@@ -62,9 +69,12 @@ public class SysMenuContronller {
     @MethodLog(content = "获取菜单树接口")
     @GetMapping(value = "/menu/tree")
     public ResponseBean getMenuTree() {
-        AuthUser user = WebUtils.getCurrentUser();
-        List<SysMenu> menuTree = sysMenuService.getMenuTree(user.getId());
-        return ResponseBeanUtil.createScBean(menuTree);
+//        SysUser sysUser = ThreadLocalUtil.get();
+        SysUser sysUser = new SysUser();
+        sysUser.setAdminFlag(true);
+        sysUser.setId(1);
+        List<SysMenu> menuTree = sysMenuService.getMenuTree(sysUser);
+        return ResponseBeanUtil.ok(menuTree);
     }
 
     /**
@@ -75,9 +85,12 @@ public class SysMenuContronller {
     @MethodLog(content = "获取菜单列表接口")
     @GetMapping(value = "/menu/list")
     public ResponseBean getMenuList() {
-        AuthUser user = WebUtils.getCurrentUser();
-        List<SysMenu> menuList = sysMenuService.getMenuList(user.getId());
-        return ResponseBeanUtil.createScBean(menuList);
+//        SysUser sysUser = ThreadLocalUtil.get();
+        SysUser sysUser = new SysUser();
+        sysUser.setAdminFlag(true);
+        sysUser.setId(1);
+        List<SysMenu> menuList = sysMenuService.getMenuList(sysUser);
+        return ResponseBeanUtil.ok(menuList);
     }
 
     /**
@@ -90,10 +103,10 @@ public class SysMenuContronller {
     @GetMapping(value = "/menu/delete")
     public ResponseBean deleteMenu(Integer menuId) {
         if (null == menuId){
-            return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+            return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
         }
         sysMenuService.deleteMenuById(menuId);
-        return ResponseBeanUtil.createScBean();
+        return ResponseBeanUtil.ok();
     }
 
     /**
@@ -106,7 +119,7 @@ public class SysMenuContronller {
     @GetMapping(value = "/menu/getMenuInfo")
     public ResponseBean getMenu(Integer menuId) {
         SysMenuVo menu = sysMenuService.getMenuById(menuId);
-        return ResponseBeanUtil.createScBean(menu);
+        return ResponseBeanUtil.ok(menu);
     }
 
     /**
@@ -119,7 +132,7 @@ public class SysMenuContronller {
     @PostMapping(value = "/menu/edit")
     public ResponseBean saveMenu(@RequestBody SysMenu menu) {
         SysMenu sysMenu = sysMenuService.saveMenu(menu);
-        return ResponseBeanUtil.createScBean(sysMenu);
+        return ResponseBeanUtil.ok(sysMenu);
     }
 
 }

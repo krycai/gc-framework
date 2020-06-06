@@ -1,6 +1,8 @@
 package com.allen.sys.service.impl;
 
 import com.allen.sys.mapper.SysMenuMapper;
+import com.allen.sys.model.po.SysMenu;
+import com.allen.sys.model.po.SysUser;
 import com.allen.sys.model.vo.SysMenuVo;
 import com.allen.sys.service.SysMenuService;
 import com.google.common.collect.Maps;
@@ -24,20 +26,20 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysMenuMapper sysMenuMapper;
 
     @Override
-    public List<SysMenu> getMenuNav(Integer userId) {
-        return makeTree(getMenuListByUserId(userId), true);
+    public List<SysMenu> getMenuNav(SysUser sysUser) {
+        return makeTree(getMenuListByUserId(sysUser), true);
     }
 
     @Override
-    public List<SysMenu> getMenuTree(Integer userId) {
-        return makeTree(getMenuListByUserId(userId), false);
+    public List<SysMenu> getMenuTree(SysUser sysUser) {
+        return makeTree(getMenuListByUserId(sysUser), false);
     }
 
     @Override
-    public List<SysMenu> getMenuList(Integer userId) {
+    public List<SysMenu> getMenuList( SysUser sysUser) {
         List<SysMenu> resultList = new ArrayList<>();
         //按父子顺序排列菜单列表
-        sortList(resultList, getMenuListByUserId(userId), "");
+        sortList(resultList, getMenuListByUserId(sysUser), "");
         return resultList;
     }
 
@@ -64,16 +66,15 @@ public class SysMenuServiceImpl implements SysMenuService {
     /**
      * 获得用户菜单列表，超级管理员可以查看所有菜单
      *
-     * @param userId 用户ID
+     * @param sysUser 用户ID
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> getMenuListByUserId(Integer userId) {
+    public List<SysMenu> getMenuListByUserId(SysUser sysUser) {
         //超级管理员
-        boolean isAdmin = sysMenuMapper.checkUserIsSysAdmin(userId)>0;
         Map<String,Object> map = Maps.newHashMap();
-        map.put("isAdmin",isAdmin);
-        map.put("userId", userId);
+        map.put("isAdmin",sysUser.getAdminFlag());
+        map.put("userId", sysUser.getId());
         List<SysMenu> list = sysMenuMapper.findListByParam(map);
         return list;
     }
@@ -110,7 +111,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         while (iterator.hasNext()) {
             String parentId = iterator.next();
             if (!dtoMap.containsKey(parentId)) {
-                SysMenu sysMenu = this.sysMenuMapper.getMenuById(Integer.valueOf(parentId));
+                SysMenu sysMenu = this.sysMenuMapper.selectByPrimaryKey(parentId);
                 if ("1".equals(sysMenu.getDelFlag())) {
                     continue;
                 }
@@ -130,7 +131,6 @@ public class SysMenuServiceImpl implements SysMenuService {
                 if (null != parent) {
                     //找不到父节点，
                     parent.addChild(node);
-                    parent.setLeaf(false);
                 }
             }
         }
@@ -165,17 +165,17 @@ public class SysMenuServiceImpl implements SysMenuService {
     public void deleteMenuById(Integer menuId) {
         SysMenu sysMenu = new SysMenu();
         sysMenu.setId(menuId);
-        sysMenu.setDelFlag("1");
-        sysMenuMapper.updateEntity(sysMenu);
+        sysMenu.setDelFlag(true);
+        sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
     }
 
     @Override
     public SysMenuVo getMenuById(Integer menuId) {
-        SysMenu sysMenu = sysMenuMapper.getMenuById(menuId);
+        SysMenu sysMenu = sysMenuMapper.selectByPrimaryKey(menuId);
         SysMenuVo sysMenuVo = new SysMenuVo();
         BeanUtils.copyProperties(sysMenu,sysMenuVo);
         if (null != sysMenu.getParentId()){
-            SysMenu parentMenu = sysMenuMapper.getMenuById(sysMenu.getParentId());
+            SysMenu parentMenu = sysMenuMapper.selectByPrimaryKey(sysMenu.getParentId());
             sysMenuVo.setParentName(parentMenu.getText());
         }
         return sysMenuVo;
@@ -195,29 +195,32 @@ public class SysMenuServiceImpl implements SysMenuService {
         if( menu.getId() == null ){
             if( menu.getParentId() == null ){
                 //新增顶级菜单
-                menu.preInsert();
+                menu.setCreateTime(new Date());
+                menu.setUpdateTime(new Date());
                 sysMenuMapper.insert(menu);
             }else{
                 //新增非顶级菜单
-                SysMenu parentMenu = sysMenuMapper.getMenuById(menu.getParentId());
+                SysMenu parentMenu = sysMenuMapper.selectByPrimaryKey(menu.getParentId());
                 //获取父菜单的parentIds
                 String parentParentIds = parentMenu == null ? "" : parentMenu.getParentIds();
                 String parentIds = parentParentIds==null?"":parentParentIds + parentMenu.getId() + ",";
                 menu.setParentIds(parentIds);
-                menu.preInsert();
+                menu.setCreateTime(new Date());
+                menu.setUpdateTime(new Date());
                 sysMenuMapper.insert(menu);
             }
         }else{
             //编辑顶级菜单
             //编辑非顶级菜单
-            menu.preUpdate();
+            menu.setUpdateTime(new Date());
             if( menu.getParentId() != null) {
                 if (menu.getParentId() == 0) {
                     menu.setParentId(null);
                 }
             }
-            sysMenuMapper.updateEntity(menu);
+            sysMenuMapper.updateByPrimaryKeySelective(menu);
         }
         return menu;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.allen.sys.service;
 
-import cn.com.bluemoon.qy.pojo.po.SysMenu;
-import cn.com.bluemoon.qy.pojo.vo.SysMenuVo;
+import com.allen.sys.model.po.SysMenu;
+import com.allen.sys.model.po.SysUser;
 import com.allen.sys.model.vo.SysMenuVo;
 
 import java.util.List;
@@ -13,26 +13,26 @@ public interface SysMenuService {
     /**
      * 查询用户导航菜单
      *
-     * @param userId 用户ID
+     * @param sysUser 用户ID
      * @return 菜单列表 menu nav
      */
-    List<SysMenu> getMenuNav(Integer userId);
+    List<SysMenu> getMenuNav(SysUser sysUser);
 
     /**
      * 查询用户菜单列表
      *
-     * @param userId 用户ID
+     * @param sysUser 用户ID
      * @return 菜单列表 menu list
      */
-    List<SysMenu> getMenuList(Integer userId);
+    List<SysMenu> getMenuList(SysUser sysUser);
 
     /**
      * 查询用户菜单
      *
-     * @param userId 用户ID
+     * @param sysUser 用户ID
      * @return 菜单列表 menu tree
      */
-    List<SysMenu> getMenuTree(Integer userId);
+    List<SysMenu> getMenuTree(SysUser sysUser);
 
     /**
      * 删除菜单
@@ -59,10 +59,10 @@ public interface SysMenuService {
 
     /**
      * 获取用户菜单数据
-     * @param userId
+     * @param sysUser
      * @return
      */
-    List<SysMenu> getMenuListByUserId(Integer userId);
+    List<SysMenu> getMenuListByUserId(SysUser sysUser);
 
     /**
      * 构建树形菜单

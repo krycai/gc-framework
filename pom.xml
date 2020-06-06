@@ -24,7 +24,12 @@
     </properties>
 
     <dependencies>
-
+        <!--Java基础工具类，对文件、流、加密解密、转码、正则、线程、XML等JDK方法进行封装-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

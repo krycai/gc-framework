@@ -1,9 +1,11 @@
 package com.allen.sys.service;
 
-import cn.com.bluemoon.mybatis.api.Paging;
-import cn.com.bluemoon.qy.pojo.dto.SysRoleFormDto;
-import cn.com.bluemoon.qy.pojo.vo.SysUserRoleVo;
+import com.allen.sys.model.dto.SysRoleFormDto;
+import com.allen.sys.model.dto.roleParam;
+import com.allen.sys.model.po.SysRole;
+import com.allen.sys.model.po.SysUserRole;
 import com.allen.sys.model.vo.SysRoleVo;
+import com.allen.sys.model.vo.SysUserRoleVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public interface SysRoleService {
      *
      * @return 角色 page info
      */
-    PageInfo<SysRole> findRolePage();
+    PageInfo<SysRole> findRolePage(roleParam param);
 
     /**
      * 获得所有角色列表
@@ -49,13 +51,6 @@ public interface SysRoleService {
      * @param roleId 角色ID
      */
     void deleteRoleById(Integer roleId);
-
-    /**
-     * 通过角色ID获取角色用户
-     * @param roleId
-     * @return
-     */
-    public List<SysUserRoleVo> getUserRoleListByRoleId(String roleId);
 
     /**
      * delete user_role by roleId and userId

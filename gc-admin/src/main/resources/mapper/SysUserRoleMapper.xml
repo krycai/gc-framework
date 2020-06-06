@@ -9,11 +9,8 @@
     <id column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.allen.sys.model.po.SysUserRole">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="user_id" jdbcType="VARCHAR" property="userId" />
-    <id column="role_id" jdbcType="VARCHAR" property="roleId" />
-  </resultMap>
+
+  <select id = "existAdminSysUserRole" resultType="java.lang.Integer">
+        select count(*) FROM sys_user_role where user_id = #{userId} and role_id = #{roleId}
+    </select>
 </mapper>

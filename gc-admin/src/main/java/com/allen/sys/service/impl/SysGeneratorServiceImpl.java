@@ -1,11 +1,10 @@
 package com.allen.sys.service.impl;
 
-import cn.com.bluemoon.mybatis.api.Paging;
-import cn.com.bluemoon.qy.pojo.dto.GeneratorDto;
 import com.allen.sys.mapper.SysGeneratorMapper;
 import com.allen.sys.model.dto.FormCodeDto;
+import com.allen.sys.model.dto.GeneratorParam;
+import com.allen.sys.model.po.SysTable;
 import com.allen.sys.service.SysGeneratorService;
-import com.allen.sys.utils.GeneratorUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -38,11 +37,9 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	}
 
 	@Override
-	public PageInfo<SysTable> findTablePage(GeneratorDto generatorDto) {
-		// 执行分页查询
-		Paging page = generatorDto.getPage();
-		PageHelper.startPage(page.getPageNum(), page.getPageSize(), page.getOrderBy());
-		List<SysTable> list = sysGeneratorMapper.findTablePage(generatorDto.getTableName());
+	public PageInfo<SysTable> findTablePage(GeneratorParam param) {
+		PageHelper.startPage(param.getPageNum(), param.getPageSize(), param.getOrderBy());
+		List<SysTable> list = sysGeneratorMapper.findTablePage(param.getTableName());
 		return new PageInfo<>(list);
 	}
 

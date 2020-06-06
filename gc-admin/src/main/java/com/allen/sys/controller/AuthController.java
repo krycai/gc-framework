@@ -1,43 +1,34 @@
 package com.allen.sys.controller;
 
-import cn.com.bluemoon.common.web.controller.BaseController;
-import cn.com.bluemoon.common.web.security.JwtTokenUtil;
-import cn.com.bluemoon.common.web.security.WebUtils;
-import cn.com.bluemoon.qy.pojo.dto.*;
-import cn.com.bluemoon.qy.pojo.po.SysRole;
-import cn.com.bluemoon.qy.pojo.po.SysUser;
-import cn.com.bluemoon.qy.pojo.vo.LoginUserInfo;
-import cn.com.bluemoon.qy.service.IDubboUserService;
-import cn.com.bluemoon.qy.service.SystemService;
-import cn.com.bluemoon.qy.utils.AuthUserFactory;
-import cn.com.bluemoon.redis.repository.RedisRepository;
-import cn.com.bluemoon.utils.string.StringHelper;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.allen.sys.result.ResponseBean;
-import com.allen.sys.result.ResponseBeanUtil;
-import com.allen.sys.result.ResponseCodeEnum;
+import com.allen.sys.common.ResponseBean;
+import com.allen.sys.common.ResponseBeanUtil;
+import com.allen.sys.constants.ResponseCodeEnum;
+import com.allen.sys.mapper.SysUserLoginMapper;
+import com.allen.sys.model.dto.LoginForm;
+import com.allen.sys.model.dto.UserParam;
+import com.allen.sys.model.dto.UserPwdForm;
+import com.allen.sys.model.dto.UserRoleForm;
+import com.allen.sys.model.po.SysRole;
+import com.allen.sys.model.po.SysUser;
+import com.allen.sys.model.po.SysUserLogin;
+import com.allen.sys.model.vo.UserLoginVo;
 import com.allen.sys.service.SystemService;
-import com.bluemoon.pf.standard.bean.ResponseBean;
-import com.bluemoon.pf.standard.constants.ResponseCodeEnum;
-import com.bluemoon.pf.standard.utils.ResponseBeanUtil;
+import com.allen.sys.utils.AddressIpUtil;
+import com.allen.sys.utils.ThreadLocalUtil;
+import com.allen.sys.utils.TokenUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.Assert;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,91 +39,44 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/admin/auth")
-public class AuthController{
-	
+public class AuthController {
+
 	private Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
-	
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+
 	@Autowired
 	private SystemService systemService;
-	@Autowired
-	private RedisRepository redisRepository;
-	@Autowired
-    private PasswordEncoder passwordEncoder;
+    @Autowired
+    SysUserLoginMapper userLoginMapper;
 
 	/**
 	 * create token
-	 * @param jsonObject
+	 *
+	 * @param loginForm
 	 * @return
 	 */
 	@PostMapping("/ssoLogin")
-	public ResponseBean ssoLogin(HttpServletRequest request, @RequestBody JSONObject jsonObject){
-		String userName = jsonObject.getString("userName").trim();
-		String password = jsonObject.getString("password").trim();
-		LOGGER.info("=====ssoLoginLog==="+userName+"----------"+password);
-
-		HttpSession session = request.getSession();
-		session.setAttribute("userName",userName);
-		//做用户登录次数限制，1分钟内不能超过5次
-		Map<String, Object> map = systemService.userLoginLimit(userName);
-		if( !(Boolean)map.get("isSuccess")){
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+	public ResponseBean ssoLogin(HttpServletRequest request, @RequestBody LoginForm loginForm) {
+		LOGGER.info("loginName:{},password:{}" , loginForm.getLoginName() ,loginForm.getPassword());
+		SysUser sysUser = systemService.ssoLogin(loginForm);
+		if (sysUser == null){
+			return ResponseBeanUtil.fail(ResponseCodeEnum.ACCOUNT_PASSWORD);
 		}
-		try {
+		String token = TokenUtils.token(sysUser.getName(),sysUser.getPassword());
+		UserLoginVo loginVo = new UserLoginVo();
+		loginVo.setLoginName(sysUser.getLoginName());
+		loginVo.setUserName(sysUser.getName());
+		loginVo.setToken(token);
 
-			net.sf.json.JSONObject responseBean = new net.sf.json.JSONObject();
-			if (!StrUtil.isEmpty(userName) && !StrUtil.isEmpty(password)) {
-				responseBean = this.dubboUserService.userLogin(userName, password);
-			} else {
-				responseBean.put("responseMsg", "用户名、密码不能为空");
-			}
-
-			String token = "";
-			//登陆成功
-			if (responseBean.getBoolean("isSuccess") && null != responseBean.getJSONObject("user")) {
-				net.sf.json.JSONObject userJson = responseBean.getJSONObject("user");
-				AuthUser authUser = new AuthUser(userJson.getInt("account"));
-				LoginUserInfo userInfo = new LoginUserInfo();
-
-				String account = userJson.getString("account");
-				//sso登陆，获取用户的菜单权限信息，然后组装userDetails
-				//user对象必须赋上username等信息，否则getSubject返回kong
-				SysUser user = this.systemService.getSsoLoginUserByLoginAccount(account);
-				Assert.isTrue(null != user, "无此用户信息，请重新登陆");
-				user.setId(Integer.parseInt(account));
-				String realName = userJson.optString("realName", "");
-				user.setLoginName(account);
-				user.setName(realName);
-				String mobile = userJson.optString("mobile", "");
-				user.setMobile(mobile);
-				authUser = AuthUserFactory.create(user);
-				token = jwtTokenUtil.generateToken(authUser, jwtTokenUtil.getRandomKey());
-				session.setAttribute("user",authUser);
-				String jwtToken = JwtTokenUtil.TOKEN_TYPE_BEARER + " " + token;
-
-				userInfo.setAuthorization(jwtToken);
-				userInfo.setAuthUser(authUser);
-				return ResponseBeanUtil.createScBean(ResponseCodeEnum.SC.getDoc(),userInfo);
-			} else {
-				LOGGER.info("ssoLogin登录失败，具体信息：{}", responseBean.getString("responseMsg"));
-				return ResponseBeanUtil.createFailBean(responseBean.getInt("responseCode"), responseBean.getString("responseMsg"));
-			}
-
-		} catch (UsernameNotFoundException e) {
-			LOGGER.info("用户认证失败：" + "userName wasn't in the system");
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.ACCOUNT_PASSWORD);
-		} catch (LockedException lae) {
-			LOGGER.info("用户认证失败：" + "account for that username is locked, can't login");
-			return ResponseBeanUtil.createFailBean(1005,"账号已被锁定，不能登录");
-		} catch (AuthenticationException ace) {
-			LOGGER.info("用户认证失败：" + ace);
-			ace.printStackTrace();
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.ACCOUNT_ABNORMAL);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.ACCOUNT_ABNORMAL);
-		}
+        SysUserLogin userLogin = new SysUserLogin();
+		userLogin.setUserId(sysUser.getId());
+        userLogin.setUserName(sysUser.getName());
+        userLogin.setLoginName(sysUser.getLoginName());
+        userLogin.setToken(token);
+        userLogin.setLoginIp(AddressIpUtil.getIpAdrress(request));
+        userLogin.setCreateTime(new Date());
+        userLogin.setLoginTime(new Date());
+        userLoginMapper.insertSelective(userLogin);
+		return ResponseBeanUtil.ok(loginVo);
 	}
 
 	/**
@@ -143,22 +87,13 @@ public class AuthController{
 	@GetMapping("/logout")
 	public ResponseBean deleteToken(HttpServletRequest request){
 		String tokenHeader = request.getHeader("Authorization");
-		String token = tokenHeader.split(" ")[1];
-		jwtTokenUtil.deleteToken(token);
+		System.out.println(tokenHeader);
+		SysUserLogin userLogin = new SysUserLogin();
+		userLogin.setToken(tokenHeader);
+		userLoginMapper.delete(userLogin);
 		LOGGER.info("====================退出成功=========================");
-		return ResponseBeanUtil.createScBean();
+		return ResponseBeanUtil.ok();
 	}
-
-    /**
-     * Gets current user info.
-     *
-     * @return the current user info
-     */
-    @GetMapping(value = "/user/info")
-    public ResponseBean getCurrentUserInfo() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseBeanUtil.createScBean(principal);
-    }
 
     /**
      * Save current user info response entity.
@@ -168,13 +103,13 @@ public class AuthController{
      */
     @PostMapping(value = "/user/info")
     public ResponseBean saveCurrentUserInfo(@Valid @RequestBody SysUser user) {
-        AuthUser authUser = WebUtils.getCurrentUser();
+		SysUser authUser = new SysUser();
         //只能更新当前用户信息
         if (authUser.getId().equals(user.getId())) {
             // 保存用户信息
             systemService.updateUserInfo(user);
         }
-        return ResponseBeanUtil.createScBean();
+        return ResponseBeanUtil.ok();
     }
     
     /**
@@ -184,36 +119,36 @@ public class AuthController{
      * @return the response entity
      */
     @PostMapping(value = "/user/password")
-    public ResponseBean updatePassword(@RequestBody SysUserInfoDto userInfoDto) {
+    public ResponseBean updatePassword(@RequestBody UserPwdForm userInfoDto) {
         String oldPassword = userInfoDto.getOldPassword();
         String newPassword = userInfoDto.getNewPassword();
 
         try {
-			AuthUser user = WebUtils.getCurrentUser();
+			SysUser user = new SysUser();
 			// 重置密码
-			if (StringHelper.isNotBlank(oldPassword) && StringHelper.isNotBlank(newPassword)) {
-			    if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-			        return ResponseBeanUtil.createFailBean(-1,  "旧密码错误");
-			    }
-			    systemService.updateUserPasswordById(user.getId(), passwordEncoder.encode(newPassword));
-			}
-			return ResponseBeanUtil.createScBean();
+//			if (StrUtil.isNotBlank(oldPassword) && StrUtil.isNotBlank(newPassword)) {
+//			    if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+//			        return ResponseBeanUtil.fail(-1,  "旧密码错误");
+//			    }
+//			    systemService.updateUserPasswordById(user.getId(), passwordEncoder.encode(newPassword));
+//			}
+			return ResponseBeanUtil.ok();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+			return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
     }
     
     /**
      * List page info.
      *
-     * @param sysUserPageDto
+     * @param param
      * @return the page info
      */
     @PostMapping(value = "/user/list")
-    public ResponseBean userList(@RequestBody SysUserPageDto sysUserPageDto) {
-		PageInfo<SysUser> userPage = systemService.findUserPage(sysUserPageDto.getPage(), sysUserPageDto.getUser());
-		return ResponseBeanUtil.createScBean(userPage);
+    public ResponseBean userList(@RequestBody UserParam param) {
+		PageInfo<SysUser> userPage = systemService.findUserPage(param);
+		return ResponseBeanUtil.ok(userPage);
     }
 
     /**
@@ -225,7 +160,7 @@ public class AuthController{
     @GetMapping(value = "/user/getUserInfo")
     public ResponseBean getUserInfo(Integer userId) {
 		SysUser user = systemService.getUserById(userId);
-		return ResponseBeanUtil.createScBean(user);
+		return ResponseBeanUtil.ok(user);
     }
 
     /**
@@ -237,21 +172,21 @@ public class AuthController{
     @PostMapping(value = "/user/edit")
     public ResponseBean saveUser( @RequestBody SysUser user) {
     	if (null == user){
-    		return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+    		return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
     	try {
 			String password = user.getPassword();
 			//如果是新增用户
 			if( user.getId() == null && !StringUtils.isEmpty(password)){
 				//用户密码不能为空
-				user.setPassword(passwordEncoder.encode(password));
+				user.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
 			}
 			// 保存用户信息
 			systemService.saveUser(user);
-	        return ResponseBeanUtil.createScBean();
+	        return ResponseBeanUtil.ok();
 		} catch (Exception e) {
 			e.printStackTrace();
-	        return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+	        return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
     }
     
@@ -259,23 +194,23 @@ public class AuthController{
      * 用户信息更新密码字段
      * <p>Title: editPassword</p>  
      * <p>Description: </p>  
-     * @param userInfoDto
+     * @param pwdForm
      * @return
      */
     @PostMapping(value = "/user/editPassword")
-    public ResponseBean editPassword( @RequestBody SysUserInfoDto userInfoDto) {
+    public ResponseBean editPassword( @RequestBody UserPwdForm pwdForm) {
     	try {
 			SysUser user = new SysUser();
-			int userId = userInfoDto.getId();
-			String newPassword = userInfoDto.getNewPassword();
+			Integer userId = pwdForm.getId();
+			String newPassword = pwdForm.getNewPassword();
 			user.setId(userId);
-			user.setPassword(passwordEncoder.encode(newPassword));
+			user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
 			// 保存用户信息
 			systemService.saveUser(user);
-	        return ResponseBeanUtil.createScBean();
+	        return ResponseBeanUtil.ok();
 		} catch (Exception e) {
 			e.printStackTrace();
-	        return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+	        return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
     }
 
@@ -288,34 +223,7 @@ public class AuthController{
     @GetMapping(value = "/user/deleteUser")
     public ResponseBean userDelete(Integer userId) {
         systemService.deleteUserById(userId);
-        return ResponseBeanUtil.createScBean();
-    }
-    
-    /**
-     * 将用户选择的皮肤信息存入缓存
-     * @param skins
-     * @return
-     */
-    @PostMapping(value = "/user/changeSkins")
-    public ResponseBean changeSkins(@RequestBody String skins ){
-    	AuthUser authUser = WebUtils.getCurrentUser();
-    	Integer userId = authUser.getId();
-    	if( StringHelper.isEmpty(skins) ){
-    		return ResponseBeanUtil.createFailBean(1002,"请选择皮肤风格");
-    	}else{
-    		String redisKey = "style_skins_" + userId;
-    		redisRepository.set(redisKey, skins);
-    	}
-    	return ResponseBeanUtil.createScBean();
-    }
-    
-    @PostMapping(value = "/user/getSkins")
-    public ResponseBean getSkins() {
-    	AuthUser authUser = WebUtils.getCurrentUser();
-    	Integer userId = authUser.getId();
-		String redisKey = "style_skins_" + userId;
-		String skins = redisRepository.get(redisKey);
-    	return ResponseBeanUtil.createScBean(skins);
+        return ResponseBeanUtil.ok();
     }
     
     /**
@@ -326,31 +234,31 @@ public class AuthController{
 	@GetMapping(value = "/user/getUserRoleByUserId")
 	public ResponseBean getUserRoleByUserId(Integer userId) {
 		if (null == userId){
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+			return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
 
 		try {
 			List<SysRole> authList = systemService.getUserRoleByUserId(userId);
-			return ResponseBeanUtil.createScBean(authList);
+			return ResponseBeanUtil.ok(authList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+			return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
 	}
 
     /**
      * 保存用户与角色权限关系
-     * @param userRoleDto
+     * @param userRoleForm
      * @return
      */
     @PostMapping(value = "/user/saveUserRole")
-    public ResponseBean saveUserRole( @RequestBody SysUserRoleDto userRoleDto) {
+    public ResponseBean saveUserRole( @RequestBody UserRoleForm userRoleForm) {
     	try {
-			systemService.saveUserRole(userRoleDto);
-	        return ResponseBeanUtil.createScBean("授权成功");
+			systemService.saveUserRole(userRoleForm);
+	        return ResponseBeanUtil.ok("授权成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-	        return ResponseBeanUtil.createFailBean(ResponseCodeEnum.FAIL);
+	        return ResponseBeanUtil.fail(ResponseCodeEnum.FAIL);
 		}
     }
     
@@ -363,7 +271,7 @@ public class AuthController{
     @GetMapping(value = "/user/getUserByLoginName")
     public ResponseBean getUserByLoginName(String loginName) {
     	SysUser user = systemService.getUserByLoginName(loginName);
-    	return ResponseBeanUtil.createScBean(user);
+    	return ResponseBeanUtil.ok(user);
     }
 
 }

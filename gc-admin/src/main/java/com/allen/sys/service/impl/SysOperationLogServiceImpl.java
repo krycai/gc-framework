@@ -1,8 +1,8 @@
 package com.allen.sys.service.impl;
 
-import cn.com.bluemoon.mybatis.api.Paging;
 import com.allen.sys.mapper.SysOperationLogMapper;
 import com.allen.sys.model.dto.LogParamDto;
+import com.allen.sys.model.po.SysOperationLog;
 import com.allen.sys.service.SysOperationLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,8 +19,7 @@ public class SysOperationLogServiceImpl implements SysOperationLogService {
 
 	@Override
 	public PageInfo<SysOperationLog> findPage(LogParamDto paramDto) {
-		Paging page = paramDto.getPage();
-		PageHelper.startPage(page.getPageNum(), page.getPageSize());
+		PageHelper.startPage(paramDto.getPageNum(), paramDto.getPageSize());
 		List<SysOperationLog> list = sysOperationLogMapper.findPage(paramDto);
 		return new PageInfo<>(list);
 	}

@@ -1,21 +1,18 @@
 package com.allen.sys.model.po;
 
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.*;
 
 @Table(name = "sys_user")
 public class SysUser {
     /**
-     * ID
+     * 编号
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-
-    /**
-     * 优先权
-     */
-    private Integer level;
+    private Integer id;
 
     /**
      * 登录名
@@ -29,12 +26,18 @@ public class SysUser {
     private String password;
 
     /**
+     * 是否是管理员 0:不是  1是
+     */
+    @Column(name = "admin_flag")
+    private Boolean adminFlag;
+
+    /**
      * 姓名
      */
     private String name;
 
     /**
-     * 邮箱
+     * 邮件
      */
     private String email;
 
@@ -49,98 +52,16 @@ public class SysUser {
     private String mobile;
 
     /**
-     * 用户头像
-     */
-    private String photo;
-
-    /**
-     * 最后登陆IP
-     */
-    @Column(name = "login_ip")
-    private String loginIp;
-
-    /**
-     * 最后登陆时间
-     */
-    @Column(name = "login_date")
-    private Date loginDate;
-
-    /**
-     * 是否启用
+     * 是否可用
+1：可用
+0：停用
      */
     private Boolean enabled;
 
     /**
-     * 是否系统角色授权(0 否 1 是)
+     * 备注
      */
-    @Column(name = "is_role_assigned")
-    private Boolean isRoleAssigned;
-
-    /**
-     * 是否资源角色授权,(0 否 1 是)
-     */
-    @Column(name = "is_resource_assigned")
-    private Boolean isResourceAssigned;
-
-    /**
-     * 删除标记
-     */
-    @Column(name = "del_flag")
-    private Boolean delFlag;
-
-    /**
-     * 职务
-     */
-    private String duty;
-
-    /**
-     * 性别
-     */
-    private Integer sex;
-
-    /**
-     * 地址
-     */
-    private String address;
-
-    /**
-     * 身份证
-     */
-    @Column(name = "id_card")
-    private String idCard;
-
-    /**
-     * 是否是PKI用户（1：是，0：否）
-     */
-    @Column(name = "is_pki_user")
-    private Boolean isPkiUser;
-
-    /**
-     * 电脑mac地址
-     */
-    private String mac;
-
-    /**
-     * 是否超级管理员
-     */
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
-
-    /**
-     * 皮肤
-     */
-    private String skin;
-
-    /**
-     * 描述
-     */
-    private String description;
-
-    /**
-     * 创建者
-     */
-    @Column(name = "create_user")
-    private String createUser;
+    private String remarks;
 
     /**
      * 创建时间
@@ -149,51 +70,44 @@ public class SysUser {
     private Date createTime;
 
     /**
-     * 更新者
-     */
-    @Column(name = "update_user")
-    private String updateUser;
-
-    /**
      * 更新时间
      */
     @Column(name = "update_time")
     private Date updateTime;
 
     /**
-     * 获取ID
-     *
-     * @return id - ID
+     * 删除标记
+1：删除
+0：未删除
      */
-    public String getId() {
+    @Column(name = "del_flag")
+    private Boolean delFlag;
+
+    /**
+     * 角色列表
+     */
+    private List<SysRole> roles = new ArrayList<>();
+    /**
+     * 菜单列表
+     */
+    private List<SysMenu> menus = new ArrayList<>();
+
+    /**
+     * 获取编号
+     *
+     * @return id - 编号
+     */
+    public Integer getId() {
         return id;
     }
 
     /**
-     * 设置ID
+     * 设置编号
      *
-     * @param id ID
+     * @param id 编号
      */
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * 获取优先权
-     *
-     * @return level - 优先权
-     */
-    public Integer getLevel() {
-        return level;
-    }
-
-    /**
-     * 设置优先权
-     *
-     * @param level 优先权
-     */
-    public void setLevel(Integer level) {
-        this.level = level;
     }
 
     /**
@@ -233,6 +147,24 @@ public class SysUser {
     }
 
     /**
+     * 获取是否是管理员 0:不是  1是
+     *
+     * @return admin_flag - 是否是管理员 0:不是  1是
+     */
+    public Boolean getAdminFlag() {
+        return adminFlag;
+    }
+
+    /**
+     * 设置是否是管理员 0:不是  1是
+     *
+     * @param adminFlag 是否是管理员 0:不是  1是
+     */
+    public void setAdminFlag(Boolean adminFlag) {
+        this.adminFlag = adminFlag;
+    }
+
+    /**
      * 获取姓名
      *
      * @return name - 姓名
@@ -251,18 +183,18 @@ public class SysUser {
     }
 
     /**
-     * 获取邮箱
+     * 获取邮件
      *
-     * @return email - 邮箱
+     * @return email - 邮件
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * 设置邮箱
+     * 设置邮件
      *
-     * @param email 邮箱
+     * @param email 邮件
      */
     public void setEmail(String email) {
         this.email = email;
@@ -305,309 +237,47 @@ public class SysUser {
     }
 
     /**
-     * 获取用户头像
+     * 获取是否可用
+1：可用
+0：停用
      *
-     * @return photo - 用户头像
-     */
-    public String getPhoto() {
-        return photo;
-    }
-
-    /**
-     * 设置用户头像
-     *
-     * @param photo 用户头像
-     */
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    /**
-     * 获取最后登陆IP
-     *
-     * @return login_ip - 最后登陆IP
-     */
-    public String getLoginIp() {
-        return loginIp;
-    }
-
-    /**
-     * 设置最后登陆IP
-     *
-     * @param loginIp 最后登陆IP
-     */
-    public void setLoginIp(String loginIp) {
-        this.loginIp = loginIp;
-    }
-
-    /**
-     * 获取最后登陆时间
-     *
-     * @return login_date - 最后登陆时间
-     */
-    public Date getLoginDate() {
-        return loginDate;
-    }
-
-    /**
-     * 设置最后登陆时间
-     *
-     * @param loginDate 最后登陆时间
-     */
-    public void setLoginDate(Date loginDate) {
-        this.loginDate = loginDate;
-    }
-
-    /**
-     * 获取是否启用
-     *
-     * @return enabled - 是否启用
+     * @return enabled - 是否可用
+1：可用
+0：停用
      */
     public Boolean getEnabled() {
         return enabled;
     }
 
     /**
-     * 设置是否启用
+     * 设置是否可用
+1：可用
+0：停用
      *
-     * @param enabled 是否启用
+     * @param enabled 是否可用
+1：可用
+0：停用
      */
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * 获取是否系统角色授权(0 否 1 是)
+     * 获取备注
      *
-     * @return is_role_assigned - 是否系统角色授权(0 否 1 是)
+     * @return remarks - 备注
      */
-    public Boolean getIsRoleAssigned() {
-        return isRoleAssigned;
+    public String getRemarks() {
+        return remarks;
     }
 
     /**
-     * 设置是否系统角色授权(0 否 1 是)
+     * 设置备注
      *
-     * @param isRoleAssigned 是否系统角色授权(0 否 1 是)
+     * @param remarks 备注
      */
-    public void setIsRoleAssigned(Boolean isRoleAssigned) {
-        this.isRoleAssigned = isRoleAssigned;
-    }
-
-    /**
-     * 获取是否资源角色授权,(0 否 1 是)
-     *
-     * @return is_resource_assigned - 是否资源角色授权,(0 否 1 是)
-     */
-    public Boolean getIsResourceAssigned() {
-        return isResourceAssigned;
-    }
-
-    /**
-     * 设置是否资源角色授权,(0 否 1 是)
-     *
-     * @param isResourceAssigned 是否资源角色授权,(0 否 1 是)
-     */
-    public void setIsResourceAssigned(Boolean isResourceAssigned) {
-        this.isResourceAssigned = isResourceAssigned;
-    }
-
-    /**
-     * 获取删除标记
-     *
-     * @return del_flag - 删除标记
-     */
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    /**
-     * 设置删除标记
-     *
-     * @param delFlag 删除标记
-     */
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    /**
-     * 获取职务
-     *
-     * @return duty - 职务
-     */
-    public String getDuty() {
-        return duty;
-    }
-
-    /**
-     * 设置职务
-     *
-     * @param duty 职务
-     */
-    public void setDuty(String duty) {
-        this.duty = duty;
-    }
-
-    /**
-     * 获取性别
-     *
-     * @return sex - 性别
-     */
-    public Integer getSex() {
-        return sex;
-    }
-
-    /**
-     * 设置性别
-     *
-     * @param sex 性别
-     */
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    /**
-     * 获取地址
-     *
-     * @return address - 地址
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * 设置地址
-     *
-     * @param address 地址
-     */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * 获取身份证
-     *
-     * @return id_card - 身份证
-     */
-    public String getIdCard() {
-        return idCard;
-    }
-
-    /**
-     * 设置身份证
-     *
-     * @param idCard 身份证
-     */
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    /**
-     * 获取是否是PKI用户（1：是，0：否）
-     *
-     * @return is_pki_user - 是否是PKI用户（1：是，0：否）
-     */
-    public Boolean getIsPkiUser() {
-        return isPkiUser;
-    }
-
-    /**
-     * 设置是否是PKI用户（1：是，0：否）
-     *
-     * @param isPkiUser 是否是PKI用户（1：是，0：否）
-     */
-    public void setIsPkiUser(Boolean isPkiUser) {
-        this.isPkiUser = isPkiUser;
-    }
-
-    /**
-     * 获取电脑mac地址
-     *
-     * @return mac - 电脑mac地址
-     */
-    public String getMac() {
-        return mac;
-    }
-
-    /**
-     * 设置电脑mac地址
-     *
-     * @param mac 电脑mac地址
-     */
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
-
-    /**
-     * 获取是否超级管理员
-     *
-     * @return is_admin - 是否超级管理员
-     */
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    /**
-     * 设置是否超级管理员
-     *
-     * @param isAdmin 是否超级管理员
-     */
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    /**
-     * 获取皮肤
-     *
-     * @return skin - 皮肤
-     */
-    public String getSkin() {
-        return skin;
-    }
-
-    /**
-     * 设置皮肤
-     *
-     * @param skin 皮肤
-     */
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
-
-    /**
-     * 获取描述
-     *
-     * @return description - 描述
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 设置描述
-     *
-     * @param description 描述
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 获取创建者
-     *
-     * @return create_user - 创建者
-     */
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    /**
-     * 设置创建者
-     *
-     * @param createUser 创建者
-     */
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     /**
@@ -629,24 +299,6 @@ public class SysUser {
     }
 
     /**
-     * 获取更新者
-     *
-     * @return update_user - 更新者
-     */
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    /**
-     * 设置更新者
-     *
-     * @param updateUser 更新者
-     */
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    /**
      * 获取更新时间
      *
      * @return update_time - 更新时间
@@ -662,5 +314,47 @@ public class SysUser {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /**
+     * 获取删除标记
+1：删除
+0：未删除
+     *
+     * @return del_flag - 删除标记
+1：删除
+0：未删除
+     */
+    public Boolean getDelFlag() {
+        return delFlag;
+    }
+
+    /**
+     * 设置删除标记
+1：删除
+0：未删除
+     *
+     * @param delFlag 删除标记
+1：删除
+0：未删除
+     */
+    public void setDelFlag(Boolean delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public List<SysRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<SysRole> roles) {
+        this.roles = roles;
+    }
+
+    public List<SysMenu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<SysMenu> menus) {
+        this.menus = menus;
     }
 }

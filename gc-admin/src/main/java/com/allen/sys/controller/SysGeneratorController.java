@@ -1,18 +1,13 @@
 package com.allen.sys.controller;
 
-import cn.com.bluemoon.common.web.controller.BaseController;
-import cn.com.bluemoon.qy.annotation.MethodLog;
-import cn.com.bluemoon.qy.pojo.dto.FormCodeDto;
-import cn.com.bluemoon.qy.pojo.dto.GeneratorDto;
-import cn.com.bluemoon.qy.pojo.po.SysTable;
-import cn.com.bluemoon.qy.service.SysGeneratorService;
+
 import com.allen.sys.annotation.MethodLog;
+import com.allen.sys.common.ResponseBean;
+import com.allen.sys.common.ResponseBeanUtil;
 import com.allen.sys.model.dto.FormCodeDto;
-import com.allen.sys.result.ResponseBean;
-import com.allen.sys.result.ResponseBeanUtil;
+import com.allen.sys.model.dto.GeneratorParam;
+import com.allen.sys.model.po.SysTable;
 import com.allen.sys.service.SysGeneratorService;
-import com.bluemoon.pf.standard.bean.ResponseBean;
-import com.bluemoon.pf.standard.utils.ResponseBeanUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +21,8 @@ import java.io.IOException;
 /**
  * 
  * @Description  代码生成器
- *
- * @author Guoqing
- * @Date 2018年1月15日
  */
+
 @Validated
 @RestController
 @CrossOrigin()
@@ -44,9 +37,9 @@ public class SysGeneratorController  {
 	 */
 	@MethodLog(content = "获取代码生成器列表接口")
 	@PostMapping(value="/list")
-	public ResponseBean list(@RequestBody GeneratorDto generatorDto) {
-		PageInfo<SysTable> tablePage = sysGeneratorService.findTablePage(generatorDto);
-		return ResponseBeanUtil.createScBean(tablePage);
+	public ResponseBean list(@RequestBody GeneratorParam param) {
+		PageInfo<SysTable> tablePage = sysGeneratorService.findTablePage(param);
+		return ResponseBeanUtil.ok(tablePage);
 	}
 	
 	/**

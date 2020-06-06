@@ -1,21 +1,17 @@
-package com.allen.sys.model.vo;
+package com.allen.sys.model.dto;
 
-import com.allen.sys.model.po.SysRoleMenu;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * 角色Entity
  *
  * @author Guoqing
  */
-public class SysRoleVo  {
-    /**
-	 * 
-	 */
+public class SysRoleFormDto implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
     @Id
@@ -39,9 +35,9 @@ public class SysRoleVo  {
      */
     private String remarks;
     /**
-     * 菜单列表
+     * 菜单ID
      */
-    private List<SysRoleMenu> roleMenus = new ArrayList<>();
+    private String menuIds;
 
     /**
 	 * @return the id
@@ -91,11 +87,23 @@ public class SysRoleVo  {
 		this.code = code;
 	}
 
-    public List<SysRoleMenu> getRoleMenus() {
-        return roleMenus;
+    public String getMenuIds() {
+        return menuIds;
     }
 
-    public void setRoleMenus(List<SysRoleMenu> roleMenus) {
-        this.roleMenus = roleMenus;
+    public void setMenuIds(String menuIds) {
+        this.menuIds = menuIds;
+    }
+
+    @Override
+    public String toString() {
+        return "SysRoleFormDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", enabled=" + enabled +
+                ", remarks='" + remarks + '\'' +
+                ", menuIds='" + menuIds + '\'' +
+                '}';
     }
 }

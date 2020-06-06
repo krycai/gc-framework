@@ -14,20 +14,26 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="del_flag" jdbcType="BIT" property="delFlag" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.allen.sys.model.po.SysRole">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="is_user_assigned" jdbcType="BIT" property="isUserAssigned" />
-    <result column="is_auth_assigned" jdbcType="BIT" property="isAuthAssigned" />
-    <result column="del_flag" jdbcType="BIT" property="delFlag" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-  </resultMap>
+
+  <select id ="findRolePage" resultMap="BaseResultMap">
+    SELECT
+    t.*
+    FROM
+    `sys_role` t
+    WHERE
+    t.del_flag = 0
+    <if test="code !=null and code != ''">
+      and t.`code` like concat("%",#{code},"%")
+    </if>
+    <if test="name != null and name !=''">
+      AND t.`name`like concat("%",#{name},"%")
+    </if>
+    ORDER BY
+    t.create_time DESC
+  </select>
+
+  <select id = "findListByUserId" resultType="com.allen.sys.model.po.SysRole">
+        select * from sys_role where enabled = 1 and id in (select role_id from sys_user_role where user_id = #{userId})
+    </select>
+
 </mapper>

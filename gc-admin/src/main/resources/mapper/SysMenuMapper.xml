@@ -20,27 +20,27 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="del_flag" jdbcType="BIT" property="delFlag" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.allen.sys.model.po.SysMenu">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="href" jdbcType="VARCHAR" property="href" />
-    <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
-    <result column="permission" jdbcType="VARCHAR" property="permission" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="orderby" jdbcType="INTEGER" property="orderby" />
-    <result column="enabled" jdbcType="BIT" property="enabled" />
-    <result column="del_flag" jdbcType="BIT" property="delFlag" />
-    <result column="platform" jdbcType="INTEGER" property="platform" />
-  </resultMap>
+
+  <select id="findListByParam" resultMap="BaseResultMap">
+    select *
+    FROM sys_menu a
+    <if test="!param.isAdmin">
+      JOIN sys_role_menu rm ON rm.menu_id = a.id
+      JOIN sys_role r ON r.id = rm.role_id AND r.enabled = '1' AND r.del_flag = '0'
+      JOIN sys_user_role ur ON ur.role_id = r.id and ur.user_id = #{param.userId}
+    </if>
+    WHERE a.del_flag = '0'
+    ORDER BY a.sort asc
+  </select>
+
+  <select id="findListByUserId" resultMap="BaseResultMap">
+    select *
+    FROM sys_menu a
+    JOIN sys_role_menu rm ON rm.menu_id = a.id
+    JOIN sys_role r ON r.id = rm.role_id AND r.enabled = '1' AND r.del_flag = '0'
+    JOIN sys_user_role ur ON ur.role_id = r.id and ur.user_id = #{userId}
+    WHERE a.del_flag = '0'
+    ORDER BY a.sort asc
+  </select>
+
 </mapper>

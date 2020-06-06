@@ -8,11 +8,5 @@
     <id column="role_id" jdbcType="VARCHAR" property="roleId" />
     <id column="menu_id" jdbcType="VARCHAR" property="menuId" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.allen.sys.model.po.SysRoleMenu">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="role_id" jdbcType="INTEGER" property="roleId" />
-    <id column="menu_id" jdbcType="INTEGER" property="menuId" />
-  </resultMap>
+
 </mapper>
