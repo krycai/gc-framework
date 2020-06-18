@@ -1,7 +1,6 @@
 package com.allen.sys.filter;
 
 import cn.hutool.core.util.StrUtil;
-import com.allen.sys.mapper.SysUserMapper;
 import com.allen.sys.model.po.SysUser;
 import com.allen.sys.service.SystemService;
 import com.allen.sys.utils.ThreadLocalUtil;
@@ -10,11 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,8 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-@Configuration   //1.主要用于标记配置类，兼备Component的效果。
-//@EnableScheduling   // 2.开启定时任务
+@Configuration
 public class CheckFilter extends HandlerInterceptorAdapter {
     private Logger LOGGER = LoggerFactory.getLogger(CheckFilter.class);
     private static  Map<String,Long> userLoginMap = new HashMap<String,Long>();
@@ -56,10 +51,10 @@ public class CheckFilter extends HandlerInterceptorAdapter {
             }
             if(userLoginMap.get(token)==null){
                 userLoginMap.put(token,System.currentTimeMillis());
-//                SysUser userMsgByToken = systemService.getUserMsgByToken(token);
-//                LOGGER.info("用户信息:{}",userMsgByToken);
-//                // 放入本地线程
-//                ThreadLocalUtil.set(userMsgByToken);
+                SysUser userMsgByToken = systemService.getUserMsgByToken(token);
+                LOGGER.info("用户信息:{}",userMsgByToken);
+                // 放入本地线程
+                ThreadLocalUtil.set(userMsgByToken);
             }else{
                 Long time = userLoginMap.get(token);
                 if(time<System.currentTimeMillis()-30*60*1000){
