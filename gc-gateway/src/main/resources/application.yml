@@ -28,6 +28,12 @@ eureka:
     service-url:
       defaultZone: http://118.31.8.21:8761/eureka/
 
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
 
 # 暴露监控端点
 management:

@@ -43,31 +43,32 @@ public class RequestGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求路径:{}",uri);
 
         String method = serverHttpRequest.getMethodValue();
-        if ("POST".equals(method)) {
-            //从请求里获取Post请求体
-            String bodyStr = resolveBodyFromRequest(serverHttpRequest);
-            //TODO 得到Post请求的请求参数后，做你想做的事
-
-            //下面的将请求体再次封装写回到request里，传到下一级，否则，由于请求体已被消费，后续的服务将取不到值
-            URI tempUri = serverHttpRequest.getURI();
-            ServerHttpRequest request = serverHttpRequest.mutate().uri(tempUri).build();
-            DataBuffer bodyDataBuffer = stringBuffer(bodyStr);
-            Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
-
-            request = new ServerHttpRequestDecorator(request) {
-                @Override
-                public Flux<DataBuffer> getBody() {
-                    return bodyFlux;
-                }
-            };
-            //封装request，传给下一级
-            return chain.filter(exchange.mutate().request(request).build());
-        } else if ("GET".equals(method)) {
-            Map requestQueryParams = serverHttpRequest.getQueryParams();
-            //TODO 得到Get请求的请求参数后，做你想做的事
-
-            return chain.filter(exchange);
-        }
+        log.info("请求方法:{}",method);
+//        if ("POST".equals(method)) {
+//            //从请求里获取Post请求体
+//            String bodyStr = resolveBodyFromRequest(serverHttpRequest);
+//            //TODO 得到Post请求的请求参数后，做你想做的事
+//
+//            //下面的将请求体再次封装写回到request里，传到下一级，否则，由于请求体已被消费，后续的服务将取不到值
+//            URI tempUri = serverHttpRequest.getURI();
+//            ServerHttpRequest request = serverHttpRequest.mutate().uri(tempUri).build();
+//            DataBuffer bodyDataBuffer = stringBuffer(bodyStr);
+//            Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
+//
+//            request = new ServerHttpRequestDecorator(request) {
+//                @Override
+//                public Flux<DataBuffer> getBody() {
+//                    return bodyFlux;
+//                }
+//            };
+//            //封装request，传给下一级
+//            return chain.filter(exchange.mutate().request(request).build());
+//        } else if ("GET".equals(method)) {
+//            Map requestQueryParams = serverHttpRequest.getQueryParams();
+//            //TODO 得到Get请求的请求参数后，做你想做的事
+//
+//            return chain.filter(exchange);
+//        }
         return chain.filter(exchange);
     }
     /**
