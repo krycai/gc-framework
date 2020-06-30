@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/operationLog")
+@RequestMapping("/admin/operationLog")
 public class SysOperationLogController {
 
     @Autowired

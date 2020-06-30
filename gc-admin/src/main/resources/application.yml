@@ -1,0 +1,37 @@
+server:
+  port: 10888
+spring:
+  application:
+    name: gc-admin
+  datasource:
+    name: develop
+    url: jdbc:mysql://118.31.8.21:3306/microwaveDB?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: root
+    password: rootroot
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+  #spring.datasource.filters = stat,wall,log4j2
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    removeAbandoned: true
+    removeAbandonedTimeout: 1800
+# 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://118.31.8.21:8761/eureka/
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml

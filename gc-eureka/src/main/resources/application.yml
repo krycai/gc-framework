@@ -1,0 +1,15 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://118.31.8.21:8761/eureka/
+    fetch-registry: false
+    register-with-eureka: false
+  server:
+    enable-self-preservation: false
+spring:
+  application:
+    name: gc-eureka
+
+server:
+  port: 8761
+
