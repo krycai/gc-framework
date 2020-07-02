@@ -20,6 +20,45 @@ spring:
           # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
           filters:
             - StripPrefix=1
+             # 配置限流
+           # - name: RequestRateLimiter
+            #配置熔断，该过滤器会使用 Hystrix 熔断与回退，原理是将请求包装成 RouteHystrixCommand 执行，RouteHystrixCommand 继承于 com.netflix.hystrix.HystrixObservableCommand
+            #- name: Hystrix
+            # 重试机制
+            - name: Retry
+          args:
+            #限流配置
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            key-resolver: "#{@ipKeyResolver}"
+            # 配置熔断
+            name: fallbackcmd
+            #是发生熔断时回退的 URI 地址，目前只支持 forward 模式的 URI。如果服务被降级，该请求会被转发到该 URI 中
+            fallbackUri: forward:/fallback
+            #重试机制
+            retries: 3   #重试次数，默认值是 3 次。
+            series: SERVER_ERROR  #状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码），共有 5 个值
+
+      # 配置方式处理跨域问题
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            exposedHeaders:
+              - content-type
+            allowedHeaders:
+              - content-type
+            allowCredentials: true
+              allowedMethods:
+                - GET
+                - OPTIONS
+                - PUT
+                - DELETE
+                - POST
+
+  redis:
+    host: 118.31.8.21
+    port: 6379
 
 # 注册中心
 eureka:
