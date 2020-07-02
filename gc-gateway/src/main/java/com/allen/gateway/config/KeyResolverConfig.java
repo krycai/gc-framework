@@ -40,7 +40,7 @@ public class KeyResolverConfig {
      *   根据用户来做限流只需要获取当前请求的用户 ID 或者用户名
      * @return
      */
-    @Bean
+   // @Bean
     KeyResolver userKeyResolver() {
         return exchange ->
                 Mono.just(exchange.getRequest().getQueryParams().getFirst("userId"));
@@ -51,7 +51,7 @@ public class KeyResolverConfig {
      *  获取请求地址的 uri 作为限流 Key
      * @return
      */
-    @Bean
+   // @Bean
     KeyResolver apiKeyResolver() {
         return exchange ->
                 Mono.just(exchange.getRequest().getPath().value());

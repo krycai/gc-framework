@@ -21,7 +21,7 @@ spring:
           filters:
             - StripPrefix=1
              # 配置限流
-           # - name: RequestRateLimiter
+            #- name: RequestRateLimiter
             #配置熔断，该过滤器会使用 Hystrix 熔断与回退，原理是将请求包装成 RouteHystrixCommand 执行，RouteHystrixCommand 继承于 com.netflix.hystrix.HystrixObservableCommand
             #- name: Hystrix
             # 重试机制
@@ -49,12 +49,12 @@ spring:
             allowedHeaders:
               - content-type
             allowCredentials: true
-              allowedMethods:
-                - GET
-                - OPTIONS
-                - PUT
-                - DELETE
-                - POST
+            allowedMethods:
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - GET
 
   redis:
     host: 118.31.8.21

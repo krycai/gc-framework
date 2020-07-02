@@ -54,9 +54,11 @@
                  allowedHeaders:
                    - content-type
                  allowCredentials: true
-                   allowedMethods:
+                 allowedMethods:   
                    - GET
                    - OPTIONS
                    - PUT
                    - DELETE
                    - POST
+                   
+                 # allowedMethods: "*"
