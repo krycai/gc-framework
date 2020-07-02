@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import tk.mybatis.spring.annotation.MapperScan;
 
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @EnableEurekaClient
 @SpringBootApplication(scanBasePackages = {"com.allen.sys"})
 @MapperScan(value = "com.allen.sys.mapper")
