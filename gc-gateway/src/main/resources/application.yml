@@ -14,7 +14,7 @@ spring:
         - id: gc-admin
           # lb代表从注册中心获取服务，且已负载均衡方式转发 lb://GC-ADMIN 或者 http://localhost:10888
           #uri: lb://gc-admin
-          uri: http://localhost:10888
+          uri: http://118.31.8.21:10888
           predicates:
             - Path=/admin/**
           # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
