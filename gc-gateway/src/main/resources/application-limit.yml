@@ -1,0 +1,77 @@
+## 限流配置
+
+server:
+  port: 9999
+spring:
+  application:
+    name: gc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          # 服务名小写
+          lower-case-service-id: true
+      routes:
+        - id: gc-admin
+          # lb代表从注册中心获取服务，且已负载均衡方式转发 lb://GC-ADMIN 或者 http://localhost:10888
+          #uri: lb://gc-admin
+          uri: http://118.31.8.21:10888
+          predicates:
+            - Path=/admin/**
+          # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
+          filters:
+            - StripPrefix=1
+             # 配置限流
+            - name: RequestRateLimiter
+          args:
+            #限流配置
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            key-resolver: "#{@ipKeyResolver}"
+
+      # 配置方式处理跨域问题
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            exposedHeaders:
+              - content-type
+            allowedHeaders:
+              - content-type
+            allowCredentials: true
+            allowedMethods:
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - GET
+
+  redis:
+    host: 118.31.8.21
+    port: 6379
+
+# 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://118.31.8.21:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

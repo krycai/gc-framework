@@ -1,0 +1,74 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: gc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          # 服务名小写
+          lower-case-service-id: true
+      routes:
+        - id: gc-admin
+          # lb代表从注册中心获取服务，且已负载均衡方式转发 lb://GC-ADMIN 或者 http://localhost:10888
+          #uri: lb://gc-admin
+          uri: http://118.31.8.21:10888
+          predicates:
+            - Path=/admin/**
+          # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
+          filters:
+            - StripPrefix=1
+            # 重试机制
+            - name: Retry
+          args:
+            #重试机制
+            retries: 3   #重试次数，默认值是 3 次。
+            series: SERVER_ERROR  #状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码），共有 5 个值
+
+      # 配置方式处理跨域问题
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            exposedHeaders:
+              - content-type
+            allowedHeaders:
+              - content-type
+            allowCredentials: true
+            allowedMethods:
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - GET
+
+  redis:
+    host: 118.31.8.21
+    port: 6379
+
+# 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://118.31.8.21:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

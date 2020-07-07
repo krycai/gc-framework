@@ -3,6 +3,7 @@ package com.allen.gateway.config;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServerHttpRequest;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ public class KeyResolverConfig {
      * @return
      */
     @Bean
+    @Primary
     public KeyResolver ipKeyResolver() {
         return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
     }
@@ -40,7 +42,7 @@ public class KeyResolverConfig {
      *   根据用户来做限流只需要获取当前请求的用户 ID 或者用户名
      * @return
      */
-   // @Bean
+    @Bean
     KeyResolver userKeyResolver() {
         return exchange ->
                 Mono.just(exchange.getRequest().getQueryParams().getFirst("userId"));
@@ -51,7 +53,8 @@ public class KeyResolverConfig {
      *  获取请求地址的 uri 作为限流 Key
      * @return
      */
-   // @Bean
+    @Bean
+    //@Primary
     KeyResolver apiKeyResolver() {
         return exchange ->
                 Mono.just(exchange.getRequest().getPath().value());
