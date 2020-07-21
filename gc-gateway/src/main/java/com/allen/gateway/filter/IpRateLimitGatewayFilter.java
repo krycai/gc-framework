@@ -29,6 +29,12 @@ public class IpRateLimitGatewayFilter implements GatewayFilter, Ordered {
 	int refillTokens;
 	Duration refillDuration;
 
+	public IpRateLimitGatewayFilter(int capacity, int refillTokens, Duration refillDuration) {
+		this.capacity = capacity;
+		this.refillTokens = refillTokens;
+		this.refillDuration = refillDuration;
+	}
+
 	private static final Map<String, Bucket> CACHE = new ConcurrentHashMap<>();
 
 	private Bucket createNewBucket() {
@@ -39,13 +45,10 @@ public class IpRateLimitGatewayFilter implements GatewayFilter, Ordered {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		// if (!enableRateLimit){
-		//     return chain.filter(exchange);
-		// }
 		String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
 		Bucket bucket = CACHE.computeIfAbsent(ip, k -> createNewBucket());
 
-		log.debug("IP: " + ip + ", TokenBucket Available Tokens: " + bucket.getAvailableTokens());
+		log.debug("限制过滤器IP: " + ip + ", TokenBucket Available Tokens: " + bucket.getAvailableTokens());
 		if (bucket.tryConsume(1)) {
 			return chain.filter(exchange);
 		} else {

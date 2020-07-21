@@ -10,60 +10,62 @@ spring:
           enabled: true
           # 服务名小写
           lower-case-service-id: true
-      default-filter:
-        - name: RequestRateLimiter
-          args:
-            key-resolver: '#{@ipKeyResolver}'
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
+#      default-filter:
+#        - name: RequestRateLimiter
+#          args:
+#            key-resolver: '#{@ipKeyResolver}'
+#            redis-rate-limiter.replenishRate: 10
+#            redis-rate-limiter.burstCapacity: 20
       routes:
         - id: gc-admin
           # lb代表从注册中心获取服务，且已负载均衡方式转发 lb://GC-ADMIN 或者 http://localhost:10888
-          #uri: lb://gc-admin
-          uri: http://118.31.8.21:10888
+          uri: lb://gc-admin
+#          uri: http://118.31.8.21:10888
           predicates:
             - Path=/admin/**
           # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
           filters:
             - StripPrefix=1
              # 配置限流
-            #- name: RequestRateLimiter
-            #配置熔断，该过滤器会使用 Hystrix 熔断与回退，原理是将请求包装成 RouteHystrixCommand 执行，RouteHystrixCommand 继承于 com.netflix.hystrix.HystrixObservableCommand
-            #- name: Hystrix
+            - name: RequestRateLimiter
+              args:
+                #限流配置
+                # 令牌桶每秒填充平均速率,即行等价于允许用户每秒处理多少个请求平均数
+                redis-rate-limiter.replenishRate: 10
+                # 令牌桶的容量，允许在一秒钟内完成的最大请求数
+                redis-rate-limiter.burstCapacity: 20
+                # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象
+                key-resolver: "#{@ipKeyResolver}"
+            - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+              #配置熔断，该过滤器会使用 Hystrix 熔断与回退，原理是将请求包装成 RouteHystrixCommand 执行，RouteHystrixCommand 继承于 com.netflix.hystrix.HystrixObservableCommand
+            - name: Hystrix
+              args:
+              # 配置熔断
+                name: fallbackcmd
+              #是发生熔断时回退的 URI 地址，目前只支持 forward 模式的 URI。如果服务被降级，该请求会被转发到该 URI 中
+                fallbackUri: forward:/fallback
             # 重试机制
-            #- name: Retry
-          args:
-            #限流配置
-            # 令牌桶每秒填充平均速率,即行等价于允许用户每秒处理多少个请求平均数
-            #redis-rate-limiter.replenishRate: 10
-            # 令牌桶的容量，允许在一秒钟内完成的最大请求数
-            #redis-rate-limiter.burstCapacity: 20
-            # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象
-            #key-resolver: "#{@ipKeyResolver}"
-            # 配置熔断
-            #name: fallbackcmd
-            #是发生熔断时回退的 URI 地址，目前只支持 forward 模式的 URI。如果服务被降级，该请求会被转发到该 URI 中
-            #fallbackUri: forward:/fallback
-            #重试机制
-            #retries: 3   #重试次数，默认值是 3 次。
-            #series: SERVER_ERROR  #状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码），共有 5 个值
+#            - name: Retry
+                #重试机制
+                #retries: 3   #重试次数，默认值是 3 次。
+                #series: SERVER_ERROR  #状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码），共有 5 个值
 
       # 配置方式处理跨域问题
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            exposedHeaders:
-              - content-type
-            allowedHeaders:
-              - content-type
-            allowCredentials: true
-            allowedMethods:
-              - POST
-              - DELETE
-              - PUT
-              - OPTIONS
-              - GET
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            exposedHeaders:
+#              - content-type
+#            allowedHeaders:
+#              - content-type
+#            allowCredentials: true
+#            allowedMethods:
+#              - POST
+#              - DELETE
+#              - PUT
+#              - OPTIONS
+#              - GET
 
 spring.redis:
     host: 118.31.8.21

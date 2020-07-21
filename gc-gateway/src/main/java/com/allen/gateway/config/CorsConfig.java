@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  * 代码配置方式配置跨域
  * @author xuguocai 2020/6/30 17:13
  */
-//@Configuration
+@Configuration
 public class CorsConfig {
 
     /**
@@ -70,5 +70,4 @@ public class CorsConfig {
             return chain.filter(ctx);
         };
     }
-
 }
