@@ -19,6 +19,7 @@
         <module>gc-generator</module>
         <module>gc-eureka</module>
         <module>gc-gateway</module>
+        <module>gc-zookeeperlock</module>
     </modules>
 
     <properties>
