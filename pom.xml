@@ -20,6 +20,7 @@
         <module>gc-eureka</module>
         <module>gc-gateway</module>
         <module>gc-zookeeperlock</module>
+        <module>gc-mycat</module>
     </modules>
 
     <properties>
