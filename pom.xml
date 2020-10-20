@@ -16,12 +16,13 @@
 
     <modules>
         <module>gc-admin</module>
-        <module>gc-generator</module>
+        <module>gc-tk-mybatis</module>
         <module>gc-eureka</module>
         <module>gc-gateway</module>
         <module>gc-zookeeperlock</module>
         <module>gc-mycat</module>
         <module>gc-redislock</module>
+        <module>gc-mybatis-plus</module>
     </modules>
 
     <properties>
