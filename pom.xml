@@ -21,6 +21,7 @@
         <module>gc-gateway</module>
         <module>gc-zookeeperlock</module>
         <module>gc-mycat</module>
+        <module>gc-redislock</module>
     </modules>
 
     <properties>

@@ -19,7 +19,7 @@ public class TravelrecordController {
     @GetMapping(value = "/insert")
     public String insert() {
         Travelrecord travelrecord = new Travelrecord();
-        travelrecord.setId(4);
+        travelrecord.setId(5);
         travelrecord.setName("\uD83D\uDCAA\uD83D\uDC48\uD83D\uDE4D\uD83D\uDE4E\uD83D\uDE36\uD83D\uDCF1\uD83D\uDCF2");
 
         travelrecordMapper.insertSelective(travelrecord);
