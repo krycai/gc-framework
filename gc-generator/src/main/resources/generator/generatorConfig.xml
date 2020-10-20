@@ -24,11 +24,11 @@
         </jdbcConnection>
 
         <!--model包路径-->
-        <javaModelGenerator targetPackage="com.allen.sys.model.po" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.allen.sys.model.po" targetProject="gc-generator/src/main/java"/>
         <!--mapper.xml包路径-->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="gc-generator/src/main/resources"/>
         <!--mapper包路径-->
-        <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="src/main/java"
+        <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="gc-generator/src/main/java"
                              type="XMLMAPPER"/>
         <!--表配置，tableName支持%，表示全部生成-->
         <table tableName="sys_dict_entry">
