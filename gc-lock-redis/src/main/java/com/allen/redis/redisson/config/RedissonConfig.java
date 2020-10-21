@@ -6,6 +6,7 @@ import com.allen.redis.redisson.service.impl.RedissonDistributedLocker;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.config.SingleServerConfig;
@@ -22,7 +23,6 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration
 @ConditionalOnClass(Config.class)
-//@EnableConfigurationProperties(RedissonProperties.class)
 public class RedissonConfig {
 
     @Autowired
@@ -33,6 +33,7 @@ public class RedissonConfig {
      * @return
      */
     @Bean
+//    @ConditionalOnProperty(name = {"spring.redis.master-name"})
     @ConditionalOnProperty(name="redisson.master-name")
     RedissonClient redissonSentinel() {
         Config config = new Config();
@@ -52,8 +53,8 @@ public class RedissonConfig {
      * 单机模式自动装配
      * @return
      */
-    @Primary
     @Bean
+//    @ConditionalOnProperty(name = {"spring.redis.host"})
     @ConditionalOnProperty(name="redisson.address")
     RedissonClient redissonSingle() {
         Config config = new Config();
@@ -65,6 +66,31 @@ public class RedissonConfig {
 
         if(StringUtils.isNotBlank(redssionProperties.getPassword())) {
             serverConfig.setPassword(redssionProperties.getPassword());
+        }
+
+        return Redisson.create(config);
+    }
+
+    /**
+     * 集群方式
+     * @return
+     */
+    @Bean
+    @ConditionalOnProperty(name = {"spring.redis.cluster.nodes"})
+    RedissonClient redissonCluster() {
+        String[] nodes = ((String)this.redssionProperties.getCluster().get("nodes")).split(",");
+
+        for(int i = 0; i < nodes.length; ++i) {
+            nodes[i] = "redis://" + nodes[i];
+        }
+
+        Config config = new Config();
+        ClusterServersConfig serverConfig =config.useClusterServers().setScanInterval(2000).addNodeAddress(nodes).setTimeout(this.redssionProperties.getTimeout())
+                .setMasterConnectionPoolSize(this.redssionProperties.getMasterConnectionPoolSize())
+                .setSlaveConnectionPoolSize(this.redssionProperties.getSlaveConnectionPoolSize())
+               ;
+        if (StringUtils.isNotBlank(this.redssionProperties.getPassword())) {
+            serverConfig.setPassword(this.redssionProperties.getPassword());
         }
 
         return Redisson.create(config);

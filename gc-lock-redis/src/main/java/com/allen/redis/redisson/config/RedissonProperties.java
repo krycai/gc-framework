@@ -4,16 +4,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author xuguocai 2020/10/20 14:26
  */
 @Configuration
 @ConfigurationProperties(prefix = "redisson")
 @ConditionalOnProperty("redisson.password")
+//@ConfigurationProperties(prefix = "spring.redis")
 public class RedissonProperties {
 
     private int timeout = 3000;
 
+    // 也可以是 host
     private String address;
 
     private String password;
@@ -27,10 +32,12 @@ public class RedissonProperties {
     private int slaveConnectionPoolSize = 250;
 
     private int masterConnectionPoolSize = 250;
-
+    // 注意这里的配置
     private String[] sentinelAddresses;
 
     private String masterName;
+
+    private Map<String, String> cluster = new HashMap();
 
     public int getTimeout() {
         return timeout;
@@ -116,4 +123,11 @@ public class RedissonProperties {
         this.sentinelAddresses = sentinelAddresses;
     }
 
+    public Map<String, String> getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(Map<String, String> cluster) {
+        this.cluster = cluster;
+    }
 }
