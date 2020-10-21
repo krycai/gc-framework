@@ -49,5 +49,12 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.22</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.2.8.RELEASE</version>
+        </dependency>
+
     </dependencies>
 </project>
