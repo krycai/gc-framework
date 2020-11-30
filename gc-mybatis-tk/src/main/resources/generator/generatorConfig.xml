@@ -31,39 +31,39 @@
         <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="gc-generator/src/main/java"
                              type="XMLMAPPER"/>
         <!--表配置，tableName支持%，表示全部生成-->
-        <table tableName="sys_dict_entry">
+        <table tableName="wx_event_msg_log">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
 
-        <table tableName="sys_dict_type">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+<!--        <table tableName="sys_dict_type">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="sys_menu">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+<!--        <table tableName="sys_menu">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="sys_operation_log">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="sys_role">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="sys_role_menu">
-            <!--mysql 配置-->
-        </table>
-        <table tableName="sys_user">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <table tableName="sys_user_role">
-            <!--mysql 配置-->
-        </table>
+<!--        <table tableName="sys_operation_log">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_role">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_role_menu">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--        </table>-->
+<!--        <table tableName="sys_user">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_user_role">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--        </table>-->
 
     </context>
 </generatorConfiguration>
