@@ -6,6 +6,8 @@ import org.redisson.api.RLock;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 对外提供的分布式锁实现
+ *
  * @author xuguocai 2020/10/20 14:57
  */
 public class RedissLockHelper {

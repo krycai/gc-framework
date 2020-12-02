@@ -7,6 +7,8 @@ import org.redisson.api.RedissonClient;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 内部对接 RedissonClient 的分布式锁封装
+ *
  * @author xuguocai 2020/10/20 14:23
  */
 
