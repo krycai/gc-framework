@@ -63,14 +63,44 @@ public class TokenUtils {
             return  false;
         }
     }
+
+    public static String reverse(String str){
+        if (str == null || str.length() <= 1){
+            return str;
+        }
+
+        System.out.println("="+str.substring(1));
+        System.out.println("----"+str.charAt(0));
+        System.out.println();
+        return reverse(str.substring(1))+str.charAt(0);
+    }
+
     public static void main(String[] args) {
 //        String username ="zhangsan";
 //        String password = "123";
 //        String token = token(username,password);
 //        System.out.println(token);
 //        boolean b = verify(token);
-        String msg="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjNmZDZlYmU0M2RhYjhiNmNlNmQwMzNhNWRhNmU2YWM1IiwiZXhwIjoxNTkxNjA1NTQyLCJ1c2VybmFtZSI6ImFkbWluIn0.6a7p6539qHscamP2OXZ2n6YG0rTzrtxRri5tRxlhDZU";
-        System.out.println(msg.length());
+//        String msg="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjNmZDZlYmU0M2RhYjhiNmNlNmQwMzNhNWRhNmU2YWM1IiwiZXhwIjoxNTkxNjA1NTQyLCJ1c2VybmFtZSI6ImFkbWluIn0.6a7p6539qHscamP2OXZ2n6YG0rTzrtxRri5tRxlhDZU";
+//        System.out.println(msg.length());
+
+//        String s1 = "Programming";
+//        String s2 = new String("Programming");
+//        String s3 = "Program";
+//        String s4 = "ming";
+//        String s5 = "Program" + "ming";
+//        String s6 = s3 + s4;
+//        System.out.println(s1 == s2);
+//        System.out.println(s1 == s5);
+//        System.out.println(s1 == s6);
+//        System.out.println(s1 == s6.intern());
+//        System.out.println(s2 == s2.intern());
+
+        String aa = "abcdef";
+        String str = reverse(aa);
+        System.out.println("=-=="+str);
     }
+
+
 
 }

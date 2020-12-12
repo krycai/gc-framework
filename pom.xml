@@ -23,6 +23,8 @@
         <module>gc-mycat</module>
         <module>gc-redislock</module>
         <module>gc-mybatis-plus</module>
+        <module>gc-java</module>
+        <module>gc-algorithm</module>
     </modules>
 
     <properties>
