@@ -1,6 +1,5 @@
 package com.allen.sys.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.allen.sys.common.ResponseBean;
 import com.allen.sys.common.ResponseBeanUtil;
 import com.allen.sys.constants.ResponseCodeEnum;
@@ -15,7 +14,6 @@ import com.allen.sys.model.po.SysUserLogin;
 import com.allen.sys.model.vo.UserLoginVo;
 import com.allen.sys.service.SystemService;
 import com.allen.sys.utils.AddressIpUtil;
-import com.allen.sys.utils.ThreadLocalUtil;
 import com.allen.sys.utils.TokenUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -26,11 +24,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**

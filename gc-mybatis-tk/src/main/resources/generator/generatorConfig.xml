@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!--处理sql中的`符号-->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--添加自定义的继承接口-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+        </plugin>
+
+        <!--数据源配置-->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!--model包路径-->
+        <javaModelGenerator targetPackage="com.allen.sys.model.po" targetProject="gc-generator/src/main/java"/>
+        <!--mapper.xml包路径-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="gc-generator/src/main/resources"/>
+        <!--mapper包路径-->
+        <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="gc-generator/src/main/java"
+                             type="XMLMAPPER"/>
+        <!--表配置，tableName支持%，表示全部生成-->
+        <table tableName="wx_event_msg_log">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+<!--        <table tableName="sys_dict_type">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+
+<!--        <table tableName="sys_menu">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+
+<!--        <table tableName="sys_operation_log">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_role">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_role_menu">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--        </table>-->
+<!--        <table tableName="sys_user">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_user_role">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--        </table>-->
+
+    </context>
+</generatorConfiguration>

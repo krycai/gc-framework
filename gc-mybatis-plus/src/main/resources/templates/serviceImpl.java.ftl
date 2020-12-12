@@ -12,13 +12,10 @@ import ${cfg.voPackage}.${entity}Vo;
 import java.util.List;
 import java.util.Map;
 </#if>
-/**
- * <br>
- * <b>功能：</b>${table.comment!} 服务实现类<br>
- * <b>作者：</b>${author}<br>
- * <b>日期：</b>${.now?string("yyyy")}<br>
- * <b>版权所有：<b>广州弘度信息科技有限公司 版权所有(C) ${.now?string("yyyy")}<br>
- */
+ /**
+  *  ${table.comment!} Mapper接口
+  * @author ${author}  ${.now?string("yyyy/mm/dd hh:mm")}
+  */
 @Service
 <#if kotlin>
 open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {

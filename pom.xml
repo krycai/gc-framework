@@ -8,6 +8,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.7.RELEASE</version>
+<!--        <version>2.3.5.RELEASE</version>-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.allen</groupId>
@@ -16,13 +17,14 @@
 
     <modules>
         <module>gc-admin</module>
-        <module>gc-tk-mybatis</module>
+        <module>gc-mybatis-plus</module>
+        <module>gc-mybatis-tk</module>
         <module>gc-eureka</module>
         <module>gc-gateway</module>
-        <module>gc-zookeeperlock</module>
+        <module>gc-lock-zookeeper</module>
+        <module>gc-lock-redis</module>
         <module>gc-mycat</module>
-        <module>gc-redislock</module>
-        <module>gc-mybatis-plus</module>
+        <module>gc-springboot</module>
         <module>gc-java</module>
         <module>gc-algorithm</module>
     </modules>
