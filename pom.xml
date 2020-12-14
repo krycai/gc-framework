@@ -29,6 +29,8 @@
         <module>gc-algorithm</module>
         <module>gc-zuul</module>
         <module>gc-datasource</module>
+        <module>gc-jdbc</module>
+        <module>gc-upload</module>
     </modules>
 
     <properties>

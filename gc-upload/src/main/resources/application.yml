@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: allen-upload
+  datasource:
+    # ʹ��druid����Դ
+    type: com.alibaba.druid.pool.DruidDataSource
+    #driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    #url: jdbc:p6spy:mysql://192.168.2.140:3306/iomp?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/allen_upload?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+    username: root
+    password: rootroot
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-request-size: 50MB
+      max-file-size: 30MB
+
+server:
+  port: 8002
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+#文件处理路径
+upload:
+  upload_root_dir: /home/ywpt_resouce/ywpt_upload/
+  upload_size: 20971520
+  nginx_url: http://10.1.36.156/ywpt_upload/
+
+out:
+  uploadUrl: /tools/images/
+
+# 针对的是 ViewController   操做，没有配置类参与
+#web:
+#  upload-path: E:/Practices/test
+#  front-path:  E:/Practices
+#spring:
+#  resources:
+#    static-locations: file:${web.upload-path},file:${web.front-path}
+
+
