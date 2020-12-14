@@ -27,6 +27,7 @@
         <module>gc-springboot</module>
         <module>gc-java</module>
         <module>gc-algorithm</module>
+        <module>gc-zuul</module>
     </modules>
 
     <properties>

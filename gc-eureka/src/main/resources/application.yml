@@ -1,9 +1,14 @@
 eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://118.31.8.21:8761/eureka/
     fetch-registry: false
     register-with-eureka: false
+    healthCheck:
+      enabled: true
   server:
     enable-self-preservation: false
 spring:

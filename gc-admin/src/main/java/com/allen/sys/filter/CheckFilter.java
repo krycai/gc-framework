@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class CheckFilter extends HandlerInterceptorAdapter {
     private Logger LOGGER = LoggerFactory.getLogger(CheckFilter.class);
     private static  Map<String,Long> userLoginMap = new HashMap<String,Long>();
