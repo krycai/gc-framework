@@ -28,6 +28,7 @@
         <module>gc-java</module>
         <module>gc-algorithm</module>
         <module>gc-zuul</module>
+        <module>gc-datasource</module>
     </modules>
 
     <properties>
