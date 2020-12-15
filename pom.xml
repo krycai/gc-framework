@@ -31,6 +31,8 @@
         <module>gc-datasource</module>
         <module>gc-jdbc</module>
         <module>gc-upload</module>
+        <module>gc-thread</module>
+        <module>gc-design-pattern</module>
     </modules>
 
     <properties>
