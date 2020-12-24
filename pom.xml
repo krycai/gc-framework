@@ -33,6 +33,7 @@
         <module>gc-upload</module>
         <module>gc-thread</module>
         <module>gc-design-pattern</module>
+        <module>gc-sharding-jdbc</module>
     </modules>
 
     <properties>
