@@ -11,6 +11,12 @@
 
     <artifactId>gc-algorithm</artifactId>
     <description>算法与数据结构集合</description>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

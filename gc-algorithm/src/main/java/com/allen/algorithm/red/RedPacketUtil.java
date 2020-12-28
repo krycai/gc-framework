@@ -9,6 +9,7 @@ import java.util.List;
  *   2）、限定最大值 * count 与 总金额的关系
  *   3）、随机取值（次数递减方式随机）
  *
+ *  注：涉及商业计算要用java.math.BigDecimal.  尤其使用double类型
  * Created by xuguocai on 2020/12/28 10:04
  */
 public class RedPacketUtil {
@@ -157,7 +158,7 @@ public class RedPacketUtil {
 
     public static void main(String[] args) {
         RedPacketUtil redPacket = new RedPacketUtil();
-        List<Integer> redPackets = redPacket.splitRedPacket(10000, 5);
+        List<Integer> redPackets = redPacket.splitRedPacket(10, 5);
         System.out.println(redPackets);
 
         int sum = 0;
