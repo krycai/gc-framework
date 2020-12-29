@@ -3,7 +3,7 @@ package com.allen.algorithm.tree;
 import java.util.LinkedList;
 
 /**
- *  二叉树排序
+ *  二叉树层序排序
  *   借助链表先进先出特点
  *
  * Created by xuguocai on 2020/12/28 13:56
