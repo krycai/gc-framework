@@ -19,7 +19,6 @@ public class SemaphoreTest {
     private static Semaphore semaphore =new Semaphore(3);
 
     public static void main(String[] args) {
-        ThreadPoolExecutor
         ExecutorService service = Executors.newFixedThreadPool(6);
         for (int i = 0;i<6;i++){
             service.execute(() ->{
