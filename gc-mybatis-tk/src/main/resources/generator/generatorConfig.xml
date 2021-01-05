@@ -24,22 +24,22 @@
         </jdbcConnection>
 
         <!--model包路径-->
-        <javaModelGenerator targetPackage="com.allen.sys.model.po" targetProject="gc-generator/src/main/java"/>
+        <javaModelGenerator targetPackage="com.allen.sys.model.po" targetProject="gc-mybatis-tk\src\main\java"/>
         <!--mapper.xml包路径-->
-        <sqlMapGenerator targetPackage="mapper" targetProject="gc-generator/src/main/resources"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="gc-mybatis-tk\src\main\resources"/>
         <!--mapper包路径-->
-        <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="gc-generator/src/main/java"
+        <javaClientGenerator targetPackage="com.allen.sys.mapper" targetProject="gc-mybatis-tk\src\main\java"
                              type="XMLMAPPER"/>
         <!--表配置，tableName支持%，表示全部生成-->
-        <table tableName="wx_event_msg_log">
-            <!--mysql 配置-->
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-
-<!--        <table tableName="sys_dict_type">-->
+<!--        <table tableName="wx_event_msg_log">-->
 <!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
+
+        <table tableName="alipay_agent_config">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
 
 <!--        <table tableName="sys_menu">-->
 <!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
