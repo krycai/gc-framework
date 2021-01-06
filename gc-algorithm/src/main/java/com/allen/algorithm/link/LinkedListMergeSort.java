@@ -1,7 +1,7 @@
 package com.allen.algorithm.link;
 
 /**
- * 链表排序
+ * 链表排序 todo
  * Created by xuguocai on 2021/1/5 16:42
  */
 public class LinkedListMergeSort {
@@ -60,7 +60,7 @@ public class LinkedListMergeSort {
     }
 
     /**
-     * 合并链表，具体的实现细节可参考<code>MergeTwoSortedLists</code>
+     * 负责排序并合并链表，具体的实现细节可参考<code>MergeTwoSortedLists</code>
      *
      * @param left
      * @param right
@@ -91,6 +91,7 @@ public class LinkedListMergeSort {
                 tmp = right;
                 result.next = right;
                 result = tmp;
+                // 给right 置空
                 right = right.next;
             }
         }
