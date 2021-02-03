@@ -17,11 +17,11 @@ import java.util.concurrent.CountDownLatch;
  * @author: allen小哥
  * @Date: 2019-11-14 22:02
  **/
-public class countDownlatchTest {
+public class CountDownlatchTest {
 
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch countDownLatch =new CountDownLatch(10); //需要10个线程完成任务
-        for (int i=0;i<10;i++){
+        for (int i=0;i<100;i++){
             // 生成线程
             new Thread(new ReadNum(i,countDownLatch)).start();
         }
@@ -42,8 +42,7 @@ public class countDownlatchTest {
             synchronized (this){
                 System.out.println("打印ID:"+id+" 线程名称为:"+Thread.currentThread().getName());
                 latch.countDown(); //通知CountDownLatch一个线程已经完成了任务
-                System.out.println("latch的数值:"+latch.getCount());
-                System.out.println("线程组任务:"+id+"  结束，其他任务继续");
+                System.out.println("latch的数值:"+latch.getCount()+"  线程组任务:"+id+"  结束，其他任务继续");
             }
         }
     }

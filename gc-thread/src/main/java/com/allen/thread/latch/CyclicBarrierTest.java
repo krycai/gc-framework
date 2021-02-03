@@ -15,16 +15,17 @@ import java.util.concurrent.CyclicBarrier;
  * @author: allen小哥
  * @Date: 2019-11-14 22:33
  **/
-public class cyclicBarrierTest {
+public class CyclicBarrierTest {
 
     public static void main(String[] args) {
+        //用于在线程到达屏障时，优先执行barrierAction，方便处理更复杂的业务场景。
         // CyclicBarrier() 参数parties指让多少个线程或者任务等待至barrier状态；参数barrierAction为当这些线程都达到barrier状态时会执行的内容。
         CyclicBarrier cyclicBarrier =new CyclicBarrier(5, new Runnable() {
             public void run() {
                 System.out.println("线程组结束");
             }
         });
-        for (int i=0;i<15;i++){
+        for (int i=0;i<150;i++){
             new Thread(new ReadNum2(i,cyclicBarrier)).start();
         }
         System.out.println("cyclicBarrier = [线程执行完]");
