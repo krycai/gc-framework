@@ -30,15 +30,8 @@ public class ThreadLocalTestDemo {
     private static final int HASH_INCREMENT = 0x61c88647;
 
     public static void main(String[] args) {
-//        ThreadLocalTestDemo.add("一枝花算不算浪漫");
-//        log.info("数组信息:{}",holder.get().messages);
-//        ThreadLocalTestDemo.clear();
-
-        int hashCode = 0;
-        for (int i =0;i<10;i++){
-            hashCode = i+HASH_INCREMENT+HASH_INCREMENT;
-            int bucket = hashCode & 15;
-            System.out.println(i+"===="+bucket);
-        }
+        ThreadLocalTestDemo.add("一枝花算不算浪漫");
+        log.info("数组信息:{}",holder.get().messages);
+        ThreadLocalTestDemo.clear();
     }
 }
