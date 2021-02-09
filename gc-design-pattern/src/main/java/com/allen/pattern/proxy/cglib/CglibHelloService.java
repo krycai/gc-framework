@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * @author xuguocai 2020/2/18 18:31
  */
 @Slf4j
-public class HelloServiceCglib implements MethodInterceptor {
+public class CglibHelloService implements MethodInterceptor {
 
     private Object object;
 

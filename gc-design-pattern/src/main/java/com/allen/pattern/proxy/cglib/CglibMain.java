@@ -9,7 +9,7 @@ import com.allen.pattern.proxy.dynamic.HelloServiceImpl;
 public class CglibMain {
 
     public static void main(String[] args) {
-        HelloServiceCglib helloServiceCglib = new HelloServiceCglib();
+        CglibHelloService helloServiceCglib = new CglibHelloService();
         HelloService service =(HelloService) helloServiceCglib.getInstance(new HelloServiceImpl());
         service.sayHello("张三");
     }
