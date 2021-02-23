@@ -1,7 +1,7 @@
-package com.allen.algorithm.link;
+package com.allen.algorithm.link.simple;
 
 /**
- * Created by xuguocai on 2020/12/30 9:52  链表由节点构成
+ * Created by xuguocai on 2020/12/30 9:52  单向节点链表由节点构成
  */
 public class Node<T> {
 

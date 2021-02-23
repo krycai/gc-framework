@@ -1,5 +1,7 @@
 package com.allen.algorithm.link;
 
+import com.allen.algorithm.link.simple.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;

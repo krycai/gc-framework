@@ -1,9 +1,9 @@
-package com.allen.algorithm.link;
+package com.allen.algorithm.link.simple;
 
 /**
  * Created by xuguocai on 2021/2/22 15:38  单链表
  */
-public class SimpleNode<T> {
+public class NodeSimpleLink<T> {
     //声明头节点尾节点
     private Node<T> head;
     private Node<T> last;
@@ -12,7 +12,7 @@ public class SimpleNode<T> {
     //计算被修改的次数
     private int modcount;
 
-    public SimpleNode(){
+    public NodeSimpleLink(){
         //实例化头结点
         head = new Node<T>();
         last = head;
@@ -153,7 +153,7 @@ public class SimpleNode<T> {
     }
 
     public static void main(String[] args) {
-        SimpleNode<String> list = new SimpleNode<>();
+        NodeSimpleLink<String> list = new NodeSimpleLink<>();
 
         //测试add
         list.add("one");
