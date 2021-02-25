@@ -13,7 +13,7 @@ public class NodeSimpleLink<T> {
     private int modcount;
 
     public NodeSimpleLink(){
-        //实例化头结点
+        //实例化头结点(哨兵节点)
         head = new Node<T>();
         last = head;
     }
@@ -152,19 +152,9 @@ public class NodeSimpleLink<T> {
         return node.getValue();
     }
 
-    public static void main(String[] args) {
-        NodeSimpleLink<String> list = new NodeSimpleLink<>();
+    public static void test(){
+        NodeSimpleLink<String> list = addNode();
 
-        //测试add
-        list.add("one");
-        list.add("two");
-        list.add("three");
-        list.add("four");
-        System.out.println("添加："+list);
-        list.add(0,"newone");
-        System.out.println("插入:"+list);
-        list.add(1,"newtwo");
-        System.out.println("插入|插入："+list);
         for (int i = 0; i < list.size(); i++) {
             System.out.print(list.getValue(i)+" ");
         }
@@ -187,5 +177,81 @@ public class NodeSimpleLink<T> {
                 System.out.print(list.getValue(i)+" ");
             }
         }
+    }
+
+    public static NodeSimpleLink addNode(){
+        NodeSimpleLink<String> list = new NodeSimpleLink<>();
+
+        //测试add
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        list.add("four");
+
+        list.add(0,"newone");
+
+        list.add(1,"newtwo");
+        return list;
+    }
+
+    /**
+     *  删除链表倒数第N个元素，如删除 倒数第三个  ，index = 3
+     *
+     *  先找要删除元素的上一个节点A，根据A找到下一个节点获取删除节点B和在下一个节点C，然后A的下一个节点指向C，B节点的下一个节点置空。
+     * @param index
+     */
+    public static void deleteLastN(NodeSimpleLink nodeSimpleLink,int index){
+//        NodeSimpleLink nodeSimpleLink = addNode();
+        System.out.println(nodeSimpleLink);
+        int length = nodeSimpleLink.size;
+        // 根据倒数 第三个 位置，获得 正序 位置 ;
+        int position = length - index ;
+        Node tmp = nodeSimpleLink.head;
+        // 获取节点A
+        for (int i =0;i<position;i++){
+            tmp = tmp.next;
+        }
+        if (tmp.next != null){
+            // 节点B
+            Node next = tmp.next;
+            // 节点A 指向 节点C
+            tmp.next = next.next;
+            // 处理节点B的下一个节点置空
+            next.setNext(null);
+            System.out.println(next);
+
+            System.out.println(nodeSimpleLink);
+        }
+    }
+
+    public static void mergeLink(NodeSimpleLink<Integer> first,NodeSimpleLink<Integer> second){
+        Node<Integer> headA = first.head.next;
+        Node<Integer> lastA = first.last;
+
+        Node<Integer> headB = second.head.next;
+        Node<Integer> lastB = second.last;
+
+
+
+    }
+
+
+    public static void main(String[] args) {
+//        test();
+//        deleteLastN(addNode(),3);
+
+        NodeSimpleLink<Integer> list = new NodeSimpleLink<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        NodeSimpleLink<Integer> second = new NodeSimpleLink<>();
+        second.add(5);
+        second.add(6);
+        second.add(7);
+        second.add(8);
+
+        mergeLink(list,second);
     }
 }

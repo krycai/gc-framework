@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by xuguocai on 2020/12/29 10:38
+ * Created by xuguocai on 2020/12/29 10:38  环形链表测试类
  */
 public class LinkLoopTest {
     /**

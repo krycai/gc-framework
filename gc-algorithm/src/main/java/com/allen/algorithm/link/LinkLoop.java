@@ -24,16 +24,20 @@ public class LinkLoop {
     }
 
     /**
-     * 判断链表是否有环
+     * 判断链表是否有环： 走得快追上走得慢的
      * @param node
      * @return
      */
     public boolean isLoop(Node node){
+        // 当前节点
         Node slow = node ;
+        // 下一个节点
         Node fast = node.next ;
 
         while (slow.next != null){
+            // 获取节点数据
             Object dataSlow = slow.data;
+            // 获取节点数据
             Object dataFast = fast.data;
 
             //说明有环(慢的被快的追上，对象是一样的)
@@ -45,8 +49,10 @@ public class LinkLoop {
             if (fast.next == null){
                 return false ;
             }
-            //slow走慢点  fast走快点
+            //slow走慢点  fast走快点 ，最后 fast 会追上 slow
+            // slow 走一步
             slow = slow.next ;
+            // fast 走两步
             fast = fast.next.next ;
 
             //如果走的快的发现为空 说明不存在环

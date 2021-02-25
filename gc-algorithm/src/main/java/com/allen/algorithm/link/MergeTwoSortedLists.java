@@ -9,7 +9,7 @@ package com.allen.algorithm.link;
 public class MergeTwoSortedLists {
 
     /**
-     * 1. 声明一个头结点
+     * 1. 声明一个头结点(哨兵节点)
      * 2. 将头结点的引用赋值给一个临时结点，也可以叫做下一结点。
      * 3. 进行循环比较，每次都将指向值较小的那个结点(较小值的引用赋值给 lastNode )。
      * 4. 再去掉较小值链表的头结点，指针后移。
@@ -33,16 +33,22 @@ public class MergeTwoSortedLists {
                 lastNode.next = l2 ;
                 l2 = l2.next ;
             }
+            // 最后一个节点变化为下一个节点，位置更替
             lastNode =lastNode.next ;
         }
+        System.out.println("新链表head:"+head);
+        System.out.println("新链表lastNode:"+lastNode);
 
         if (l1 == null){
+            // while 循环后最后的一个节点，这里是补全。
             lastNode.next = l2 ;
         }
         if (l2 == null){
+            // while 循环后最后的一个节点，这里是补全。
             lastNode.next = l1 ;
         }
 
+        System.out.println("新链表head.next:"+head.next);
         return head.next ;
     }
 
@@ -71,4 +77,24 @@ public class MergeTwoSortedLists {
         }
     }
 
+    public static void main(String[] args) {
+        MergeTwoSortedLists mergeTwoSortedLists = new MergeTwoSortedLists();
+        ListNode one = new ListNode(1);
+        ListNode one2 = new ListNode(3);
+        one.next = one2;
+        ListNode one3 = new ListNode(5);
+        one2.next = one3;
+        ListNode one4 = new ListNode(8);
+        one3.next = one4;
+
+        ListNode two = new ListNode(1);
+        ListNode two2 = new ListNode(2);
+        two.next = two2;
+        ListNode two3 = new ListNode(4);
+        two2.next = two3;
+        ListNode two4 = new ListNode(6);
+        two3.next = two4;
+
+        mergeTwoSortedLists.mergeTwoLists(one,two);
+    }
 }
