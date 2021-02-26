@@ -224,34 +224,4 @@ public class NodeSimpleLink<T> {
         }
     }
 
-    public static void mergeLink(NodeSimpleLink<Integer> first,NodeSimpleLink<Integer> second){
-        Node<Integer> headA = first.head.next;
-        Node<Integer> lastA = first.last;
-
-        Node<Integer> headB = second.head.next;
-        Node<Integer> lastB = second.last;
-
-
-
-    }
-
-
-    public static void main(String[] args) {
-//        test();
-//        deleteLastN(addNode(),3);
-
-        NodeSimpleLink<Integer> list = new NodeSimpleLink<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-
-        NodeSimpleLink<Integer> second = new NodeSimpleLink<>();
-        second.add(5);
-        second.add(6);
-        second.add(7);
-        second.add(8);
-
-        mergeLink(list,second);
-    }
 }
