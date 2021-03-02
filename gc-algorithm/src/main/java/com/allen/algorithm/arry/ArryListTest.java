@@ -166,6 +166,7 @@ public class ArryListTest {
         int count = strs.length;
         String prefix = "";
         if(count != 0){
+            // 截取的基准参数，与其他元素对比
             prefix = strs[0];
         }
         for(int i=0; i<count; i++){
