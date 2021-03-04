@@ -11,9 +11,10 @@ import java.util.List;
  *
  * 加一   给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。
  */
-public class AddOneTest {
+public class PlusOneTest {
 
     /**
+     * 加一
      *  输入数组 ：{1,3,5}
      *  加一
      *  输出数组：{1,3,6}
@@ -55,5 +56,4 @@ public class AddOneTest {
             System.out.println(Arrays.toString(nums));
         }
     }
-
 }
