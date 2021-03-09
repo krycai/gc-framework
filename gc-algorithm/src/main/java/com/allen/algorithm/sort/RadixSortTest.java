@@ -91,8 +91,32 @@ public class RadixSortTest {
                 {73, 22, 93, 43, 55, 14, 28, 65, 39, 81, 33, 100};
 
         int maxDigit = getMaxDigit(arr);
-        int[] ints = radixSort(arr, maxDigit);
-        System.out.println("基数排序:"+Arrays.toString(ints));
+        // 位数，个位时取 10 ，十位时 取 100，百位时取 1000
+        int mod = 10;
+        // 位置计算，如个位 十位 百位 千位
+        int dev = 1;
+        // for 循环，遍历位数如 个位 十位 百位 。。。
+        for (int i = 0; i < maxDigit; i++, dev *= 10, mod *= 10) {
+            // 考虑负数的情况，这里扩展一倍队列数，其中 [0-9]对应负数，[10-19]对应正数 (bucket + 10)
+            // mod * 2 定义数组长度
+            int[][] counter = new int[mod * 2][0];
+
+            for (int j = 0; j < arr.length; j++) {
+                // [0-9]对应负数，[10-19]对应正数 ，bucket + 10 表示下标的位置
+                int bucket = ((arr[j] % mod) / dev) + mod;
+                // todo counter[bucket] 为什么这么存？
+                counter[bucket] = arrayAppend(counter[bucket], arr[j]);
+
+            }
+
+            int pos = 0;
+            for (int[] bucket : counter) {
+                for (int value : bucket) {
+                    arr[pos++] = value;
+                }
+            }
+        }
+        System.out.println("基数排序:"+Arrays.toString(arr));
     }
 
     /**
