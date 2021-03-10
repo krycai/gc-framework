@@ -27,12 +27,12 @@ public class MaoPaoTest {
         int length = nums.length;
         // 元素一前一后变动元素位置
         for (int i=0;i< length;i++){
-            for (int j=i+1;j<length;j++){
+            for (int j=0;j<length-1;j++){
                 // 前后位置比较
-                if (nums[i] >nums[j]){
-                    int tmp = nums[i];
-                    nums[i] = nums[j];
-                    nums[j] = tmp;
+                if (nums[j] >nums[j+1]){
+                    int tmp = nums[j];
+                    nums[j] = nums[j+1];
+                    nums[j+1] = tmp;
                 }
             }
         }
