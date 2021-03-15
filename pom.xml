@@ -34,6 +34,7 @@
         <module>gc-thread</module>
         <module>gc-design-pattern</module>
         <module>gc-sharding-jdbc</module>
+        <module>gc-redis</module>
     </modules>
 
     <properties>
