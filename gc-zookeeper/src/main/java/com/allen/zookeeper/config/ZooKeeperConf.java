@@ -1,4 +1,4 @@
-package com.allen.lock.config;
+package com.allen.zookeeper.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;

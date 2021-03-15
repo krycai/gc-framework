@@ -1,6 +1,6 @@
-package com.allen.lock.controller;
+package com.allen.zookeeper.controller;
 
-import com.allen.lock.service.ZooKeeperService;
+import com.allen.zookeeper.lock.ZooKeeperLock;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ZooKeeperController {
 
     @Autowired
-    private ZooKeeperService zooKeeperService;
+    private ZooKeeperLock zooKeeperService;
     @Autowired
     private CuratorFramework zkClient;
 

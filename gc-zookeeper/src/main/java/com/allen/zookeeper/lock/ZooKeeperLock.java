@@ -1,4 +1,4 @@
-package com.allen.lock.service;
+package com.allen.zookeeper.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-public class ZooKeeperService {
+public class ZooKeeperLock {
 
     private static final String lockPath = "/lock/order";
     @Autowired

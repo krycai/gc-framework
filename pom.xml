@@ -21,7 +21,6 @@
         <module>gc-mybatis-tk</module>
         <module>gc-eureka</module>
         <module>gc-gateway</module>
-        <module>gc-lock-zookeeper</module>
         <module>gc-mycat</module>
         <module>gc-springboot</module>
         <module>gc-java</module>
@@ -34,6 +33,7 @@
         <module>gc-design-pattern</module>
         <module>gc-sharding-jdbc</module>
         <module>gc-redis</module>
+        <module>gc-zookeeper</module>
     </modules>
 
     <properties>
