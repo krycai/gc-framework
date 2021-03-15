@@ -11,9 +11,9 @@ import java.util.Map;
  * Created by xuguocai on 2021/3/15 9:42  redisson配置类
  */
 @Configuration
-//@ConfigurationProperties(prefix="spring.redis")
-@ConfigurationProperties(prefix = "redisson")
-@ConditionalOnProperty("redisson.password")
+@ConfigurationProperties(prefix="spring.redis")
+//@ConfigurationProperties(prefix = "redisson")
+//@ConditionalOnProperty("redisson.password")
 public class RedissonProperties {
 
     private int timeout;
