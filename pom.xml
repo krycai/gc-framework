@@ -22,7 +22,6 @@
         <module>gc-eureka</module>
         <module>gc-gateway</module>
         <module>gc-lock-zookeeper</module>
-        <module>gc-lock-redis</module>
         <module>gc-mycat</module>
         <module>gc-springboot</module>
         <module>gc-java</module>

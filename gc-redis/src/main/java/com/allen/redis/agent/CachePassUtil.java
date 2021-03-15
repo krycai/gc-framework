@@ -19,9 +19,9 @@ public class CachePassUtil {
      */
     private JdbcTemplate jdbcTemplate;
 
-    public CachePassUtil(RedisRepository redisTemplate) {
-        this.redisRepository = redisTemplate;
-    }
+//    public CachePassUtil(RedisRepository redisTemplate) {
+//        this.redisRepository = redisTemplate;
+//    }
 
     /**
      * 思路：

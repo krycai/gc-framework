@@ -3,6 +3,7 @@ package com.allen.redis.lock.redisson.service.impl;
 import com.allen.redis.lock.redisson.service.DistributedLocker;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,12 +15,13 @@ import java.util.concurrent.TimeUnit;
 
 public class RedissonDistributedLocker implements DistributedLocker {
 
+    @Autowired
     private RedissonClient redissonClient;
 
-    @Override
-    public void setRedissonClient(RedissonClient redissonClient) {
-        this.redissonClient = redissonClient;
-    }
+//    @Override
+//    public void setRedissonClient(RedissonClient redissonClient) {
+//        this.redissonClient = redissonClient;
+//    }
 
     @Override
     public RLock lock(String lockKey) {

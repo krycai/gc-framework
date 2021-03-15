@@ -1,7 +1,6 @@
 package com.allen.redis.lock.redisson.service;
 
 import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,5 +20,4 @@ public interface DistributedLocker {
 
     void unlock(RLock lock);
 
-    public void setRedissonClient(RedissonClient redissonClient);
 }

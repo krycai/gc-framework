@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by xuguocai on 2021/3/15 9:41
  */
-@Configuration
+//@Configuration
 @ConditionalOnClass(Config.class)
 public class RedissonAutoConfiguration {
 
