@@ -34,6 +34,9 @@
         <module>gc-redis</module>
         <module>gc-zookeeper</module>
         <module>gc-kafka</module>
+        <module>gc-dubbo</module>
+        <module>gc-elasticsearch</module>
+        <module>gc-docker</module>
     </modules>
 
     <properties>
