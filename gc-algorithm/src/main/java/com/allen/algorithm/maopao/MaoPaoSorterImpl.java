@@ -45,4 +45,14 @@ public class MaoPaoSorterImpl implements MaoPaoSorter {
             }
         }
     }
+
+    public static void main(String[] args) {
+        MaoPaoSorterImpl maoPaoSorter = new MaoPaoSorterImpl();
+        Integer[] aa = {1,9,5,3,7,4};
+//        maoPaoSorter.sort(aa,Integer::compareTo);
+        maoPaoSorter.sort(aa);
+        for (Integer temp:aa){
+            System.out.println(temp);
+        }
+    }
 }
