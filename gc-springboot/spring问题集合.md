@@ -1,3 +1,4 @@
+
 ## 1、Spring是什么?
   Spring是一个轻量级的IoC和AOP容器框架。是为Java应用程序提供基础性服务的一套框架，目的是用于简化企业应用程序的开发，
   它使得开发者只需要关心业务需求。主要包括以下七个模块：
@@ -10,6 +11,7 @@
   * Spring MVC：提供面向Web应用的Model-View-Controller，即MVC实现。
   * Spring DAO：对JDBC的抽象封装，简化了数据访问异常的处理，并能统一管理JDBC事务；
   * Spring ORM：对现有的ORM框架的支持；
+  
   ![](https://img-blog.csdnimg.cn/20201209012554205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E3NDUyMzM3MDA=,size_16,color_FFFFFF,t_70)
 ## 2、Spring 的优点？
   （1）spring属于低侵入式设计，代码的污染极低；
@@ -47,14 +49,14 @@
   
   Spring AOP中的动态代理主要有两种方式，JDK动态代理和CGLIB动态代理：
   
-     ① JDK动态代理只提供接口的代理，不支持类的代理，要求被代理类实现接口。JDK动态代理的核心是InvocationHandler接口和Proxy类，
+  ① JDK动态代理只提供接口的代理，不支持类的代理，要求被代理类实现接口。JDK动态代理的核心是InvocationHandler接口和Proxy类，
   在获取代理对象时，使用Proxy类来动态创建目标类的代理类（即最终真正的代理类，这个类继承自Proxy并实现了我们定义的接口），
-  当代理对象调用真实对象的方法时， InvocationHandler 通过invoke()方法反射来调用目标类中的代码，动态地将横切逻辑和业务编织在一起；
+  当代理对象调用真实对象的方法时， InvocationHandler通过invoke()方法反射来调用目标类中的代码，动态地将横切逻辑和业务编织在一起；
   
-     InvocationHandler 的 invoke(Object  proxy,Method  method,Object[] args)：proxy是最终生成的代理对象;  
-    method 是被代理目标实例的某个具体方法;  args 是被代理目标实例某个方法的具体入参, 在方法反射调用时使用。
+    InvocationHandler 的 invoke(Objectproxy,Methodmethod,Object[] args)：proxy是最终生成的代理对象;
+    method 是被代理目标实例的某个具体方法;args 是被代理目标实例某个方法的具体入参, 在方法反射调用时使用。
   
-      ② 如果被代理类没有实现接口，那么Spring AOP会选择使用CGLIB来动态代理目标类。CGLIB（Code Generation Library），
+  ② 如果被代理类没有实现接口，那么Spring AOP会选择使用CGLIB来动态代理目标类。CGLIB（Code Generation Library），
   是一个代码生成的类库，可以在运行时动态的生成指定类的一个子类对象，并覆盖其中特定方法并添加增强代码，
   从而实现AOP。CGLIB是通过继承的方式做的动态代理，因此如果某个类被标记为final，那么它是无法使用CGLIB做动态代理的。
   
@@ -64,41 +66,44 @@
     IoC让相互协作的组件保持松散的耦合，而AOP编程允许你把遍布于应用各层的功能分离出来形成可重用的功能组件。
     
 ## 5、Spring AOP里面的几个名词的概念：
-   （1）连接点（Join point）：指程序运行过程中所执行的方法。在Spring AOP中，一个连接点总代表一个方法的执行。 
+   （1）连接点（Join point）：指程序运行过程中所执行的方法。在Spring AOP中，一个连接点总代表一个方法的执行。
    
    （2）切面（Aspect）：被抽取出来的公共模块，可以用来会横切多个对象。Aspect切面可以看成 Pointcut切点 和 Advice通知 的结合，一个切面可以由多个切点和通知组成。
    
-   在Spring AOP中，切面可以在类上使用 @AspectJ 注解来实现。
+   在Spring AOP中，切面可以在类上使用@AspectJ注解来实现。
    
-   （3）切点（Pointcut）：切点用于定义 要对哪些Join point进行拦截。
+   （3）切点（Pointcut）：切点用于定义要对哪些Join point进行拦截。
    
    切点分为execution方式和annotation方式。execution方式可以用路径表达式指定对哪些方法拦截，比如指定拦截add*、search*。annotation方式可以指定被哪些注解修饰的代码进行拦截。
    
    （4）通知（Advice）：指要在连接点（Join Point）上执行的动作，即增强的逻辑，比如权限校验和、日志记录等。通知有各种类型，包括Around、Before、After、After returning、After throwing。
    
-   （5）目标对象（Target）：包含连接点的对象，也称作被通知（Advice）的对象。 由于Spring AOP是通过动态代理实现的，所以这个对象永远是一个代理对象。
+   （5）目标对象（Target）：包含连接点的对象，也称作被通知（Advice）的对象。由于Spring AOP是通过动态代理实现的，所以这个对象永远是一个代理对象。
    
    （6）织入（Weaving）：通过动态代理，在目标对象（Target）的方法（即连接点Join point）中执行增强逻辑（Advice）的过程。
    
-   （7）引入（Introduction）：添加额外的方法或者字段到被通知的类。Spring允许引入新的接口（以及对应的实现）到任何被代理的对象。例如，你可以使用一个引入来使bean实现 IsModified 接口，以便简化缓存机制。
+   （7）引入（Introduction）：添加额外的方法或者字段到被通知的类。Spring允许引入新的接口（以及对应的实现）到任何被代理的对象。例如，你可以使用一个引入来使bean实现IsModified接口，以便简化缓存机制。
    
    几个概念的关系图可以参考下图：
+   
    ![](https://img-blog.csdnimg.cn/2020120700443256.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E3NDUyMzM3MDA=,size_16,color_FFFFFF,t_70)
    
    网上有张非常形象的图，描述了各个概念所处的场景和作用，贴在这里供大家理解：
+   
    ![](https://img-blog.csdnimg.cn/20201207001947787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E3NDUyMzM3MDA=,size_16,color_FFFFFF,t_70)
    
 ## 6、Spring通知（Advice）有哪些类型？
    （1）前置通知（Before Advice）：在连接点（Join point）之前执行的通知。
    
-   （2）后置通知（After Advice）：当连接点退出的时候执行的通知（不论是正常返回还是异常退出）。 
+   （2）后置通知（AfterAdvice）：当连接点退出的时候执行的通知（不论是正常返回还是异常退出）。
    
-   （3）环绕通知（Around Advice）：包围一个连接点的通知，这是最强大的一种通知类型。 环绕通知可以在方法调用前后完成自定义的行为。它也可以选择是否继续执行连接点或直接返回它们自己的返回值或抛出异常来结束执行。
+   （3）环绕通知（Around Advice）：包围一个连接点的通知，这是最强大的一种通知类型。环绕通知可以在方法调用前后完成自定义的行为。它也可以选择是否继续执行连接点或直接返回它们自己的返回值或抛出异常来结束执行。
    
    （4）返回后通知（AfterReturning Advice）：在连接点正常完成后执行的通知（如果连接点抛出异常，则不执行）
    
    （5）抛出异常后通知（AfterThrowing advice）：在方法抛出异常退出时执行的通知
-    ![](https://img-blog.csdnimg.cn/20201207005911882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E3NDUyMzM3MDA=,size_16,color_FFFFFF,t_70)
+   
+   ![](https://img-blog.csdnimg.cn/20201207005911882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2E3NDUyMzM3MDA=,size_16,color_FFFFFF,t_70)
  
    同一个Aspect，不同advice的执行顺序：
    
@@ -110,7 +115,8 @@
    * around after advice
    * after advice
    * afterReturning
-   （2）有异常情况下的执行顺序：
+   
+ （2）有异常情况下的执行顺序：
    
    * around before advice
    * before advice
@@ -128,6 +134,7 @@
   * ① 实例化BeanFactory【DefaultListableBeanFactory】工厂，用于生成Bean对象
   * ② 实例化BeanDefinitionReader注解配置读取器，用于对特定注解（如@Service、@Repository）的类进行读取转化成  BeanDefinition 对象，（BeanDefinition 是 Spring 中极其重要的一个概念，它存储了 bean 对象的所有特征信息，如是否单例，是否懒加载，factoryBeanName 等）
   * ③ 实例化ClassPathBeanDefinitionScanner路径扫描器，用于对指定的包目录进行扫描查找 bean 对象
+  
   （2）将配置类的BeanDefinition注册到容器中：
   
   （3）调用refresh()方法刷新容器：
@@ -141,9 +148,9 @@
   * ⑦ initMessageSource()：初始化MessageSource组件，主要用于做国际化功能，消息绑定与消息解析：
   * ⑧ initApplicationEventMulticaster()：初始化事件派发器，在注册监听器时会用到：
   * ⑨ onRefresh()：留给子容器、子类重写这个方法，在容器刷新的时候可以自定义逻辑
-  * ⑩ registerListeners()：注册监听器：将容器中所有的ApplicationListener注册到事件派发器中，并派发之前步骤产生的事件：
-  * ⑪  finishBeanFactoryInitialization(beanFactory)：初始化所有剩下的单实例bean，核心方法是preInstantiateSingletons()，会调用getBean()方法创建对象；
-  * ⑫ finishRefresh()：发布BeanFactory容器刷新完成事件：
+  * ⑩registerListeners()：注册监听器：将容器中所有的ApplicationListener注册到事件派发器中，并派发之前步骤产生的事件：
+  * ⑪finishBeanFactoryInitialization(beanFactory)：初始化所有剩下的单实例bean，核心方法是preInstantiateSingletons()，会调用getBean()方法创建对象；
+  * ⑫finishRefresh()：发布BeanFactory容器刷新完成事件：
 
 ## 8、BeanFactory和ApplicationContext有什么区别？
   BeanFactory和ApplicationContext是Spring的两大核心接口，都可以当做Spring的容器。
