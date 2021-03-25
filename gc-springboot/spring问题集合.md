@@ -165,7 +165,7 @@
   （2）
   * ①BeanFactroy采用的是**延迟加载**形式来注入Bean的，只有在使用到某个Bean时(调用getBean())，才对该Bean进行加载实例化。这样，我们就不能提前发现一些存在的Spring的配置问题。如果Bean的某一个属性没有注入，BeanFacotry加载后，直至第一次使用调用getBean方法才会抛出异常。
   
-  * ②ApplicationContext，它是在容器启动时，一次性创建了所有的Bean。这样，在容器启动时，我们就可以发现Spring中存在的配置错误，这样有利于检查所依赖属性是否注入。 
+  * ②ApplicationContext，它是在容器启动时，一次性创建了所有的Bean。这样，在容器启动时，我们就可以发现Spring中存在的配置错误，这样有利于检查所依赖属性是否注入。
   
   * ③ApplicationContext启动后预载入所有的单实例Bean，所以在运行的时候速度比较快，因为它们已经创建好了。相对于BeanFactory，ApplicationContext 唯一的不足是占用内存空间，当应用程序配置Bean较多时，程序启动较慢。
   
@@ -177,6 +177,7 @@
   简单来说，Spring Bean的生命周期只有四个阶段：**实例化 Instantiation --> 属性赋值 Populate  --> 初始化 Initialization  --> 销毁 Destruction**
   
   但具体来说，Spring Bean的生命周期包含下图的流程：
+  
   ![](https://img-blog.csdnimg.cn/img_convert/84341632e9df3625a91c3e2a1437ee65.png)
   （1）实例化Bean：
   
@@ -192,6 +193,7 @@
    * ②如果这个Bean实现了BeanClassLoaderAware接口，调用setBeanClassLoader()方法，传入ClassLoader对象的实例。
    * ②如果这个Bean实现了BeanFactoryAware接口，会调用它实现的setBeanFactory()方法，传递的是Spring工厂自身。
    * ③如果这个Bean实现了ApplicationContextAware接口，会调用setApplicationContext(ApplicationContext)方法，传入Spring上下文；
+   
   （4）BeanPostProcessor前置处理：如果想对Bean进行一些自定义的前置处理，那么可以让Bean实现了BeanPostProcessor接口，那将会调用postProcessBeforeInitialization(Object obj, String s)方法。
   
   （5）InitializingBean：如果Bean实现了InitializingBean接口，执行afeterPropertiesSet()方法。
@@ -264,10 +266,11 @@
   （1）在Spring框架xml配置中共有5种自动装配：
   
   * no：默认的方式是不进行自动装配的，通过手工设置ref属性来进行装配bean。
-  * byName：通过bean的名称进行自动装配，如果一个bean的 property 与另一bean 的name 相同，就进行自动装配。 
+  * byName：通过bean的名称进行自动装配，如果一个bean的 property 与另一bean 的name 相同，就进行自动装配。
   * byType：通过参数的数据类型进行自动装配。
   * constructor：利用构造函数进行装配，并且构造函数的参数通过byType进行装配。
   * autodetect：自动探测，如果有构造方法，通过 construct的方式自动装配，否则使用 byType的方式自动装配。
+  
   （2）基于注解的自动装配方式：
   
   使用@Autowired、@Resource注解来自动装配指定的bean。在使用@Autowired注解之前需要在Spring配置文件进行配置，<context:annotation-config />。在启动spring IoC时，容器自动装载了一个AutowiredAnnotationBeanPostProcessor后置处理器，当容器扫描到@Autowied、@Resource或@Inject时，就会在IoC容器自动查找需要的bean，并装配给该对象的属性。在使用@Autowired时，首先在容器中查询对应类型的bean：
@@ -318,17 +321,17 @@
   
   （3）Spring中的隔离级别：
   
-   ① ISOLATION_DEFAULT：这是个 PlatfromTransactionManager 默认的隔离级别，使用数据库默认的事务隔离级别。
+   ①ISOLATION_DEFAULT：这是个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别。
    
-   ② ISOLATION_READ_UNCOMMITTED：读未提交，允许事务在执行过程中，读取其他事务未提交的数据。
+   ②ISOLATION_READ_UNCOMMITTED：读未提交，允许事务在执行过程中，读取其他事务未提交的数据。
    
-   ③ ISOLATION_READ_COMMITTED：读已提交，允许事务在执行过程中，读取其他事务已经提交的数据。
+   ③ISOLATION_READ_COMMITTED：读已提交，允许事务在执行过程中，读取其他事务已经提交的数据。
    
-   ④ ISOLATION_REPEATABLE_READ：可重复读，在同一个事务内，任意时刻的查询结果都是一致的。
+   ④ISOLATION_REPEATABLE_READ：可重复读，在同一个事务内，任意时刻的查询结果都是一致的。
    
-   ⑤ ISOLATION_SERIALIZABLE：所有事务逐个依次执行。
+   ⑤ISOLATION_SERIALIZABLE：所有事务逐个依次执行。
 
-16、Spring 框架中都用到了哪些设计模式？
+## 16、Spring 框架中都用到了哪些设计模式？
   Spring设计模式的详细使用案例可以阅读这篇文章：https://blog.csdn.net/a745233700/article/details/112598471
   
   （1）工厂模式：Spring使用工厂模式，通过BeanFactory和ApplicationContext来创建对象
@@ -339,7 +342,7 @@
   
   （4）代理模式：Spring的AOP功能用到了JDK的动态代理和CGLIB字节码生成技术
   
-  （5）模板方法：可以将相同部分的代码放在父类中，而将不同的代码放入不同的子类中，用来解决代码重复的问题。比如RestTemplate, JmsTemplate, JpaTemplate
+  （5）模板方法：可以将相同部分的代码放在父类中，而将不同的代码放入不同的子类中，用来解决代码重复的问题。比如RestTemplate,JmsTemplate,JpaTemplate
   
   （6）适配器模式：Spring AOP的增强或通知（Advice）使用到了适配器模式，Spring MVC中也是用到了适配器模式适配Controller
   
