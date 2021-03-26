@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  *
  *
  */
-@Component
+//@Component
 public class InitializingBeanConfig implements InitializingBean {
 
     @Override
