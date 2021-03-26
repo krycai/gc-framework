@@ -5,11 +5,21 @@ package com.allen.boot.po;
  */
 public class User {
 
+    private Person person;
+
     private String name;
 
     private String age;
 
     private String hello;
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     public String getName() {
         return name;
