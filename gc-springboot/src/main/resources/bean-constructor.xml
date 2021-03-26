@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--配置bean,配置后该类由spring管理-->
+    <bean name="springAction" class="com.allen.boot.inject.constructor.SpringAction">
+        <!--(2)创建构造器注入,如果主类有带参的构造方法则需添加此配置-->
+<!--        <constructor-arg ref="springDao"></constructor-arg>-->
+<!--        <constructor-arg ref="user"></constructor-arg>-->
+        <constructor-arg index="0" ref="springDao"></constructor-arg>
+        <constructor-arg index="1" ref="user"></constructor-arg>
+    </bean>
+    <bean name="springDao" class="com.allen.boot.inject.set.SpringDaoImpl"></bean>
+
+    <bean name="user" class="com.allen.boot.po.User"></bean>
+</beans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--配置bean,配置后该类由spring管理-->
+    <bean name="springAction" class="com.allen.boot.inject.staticfactory.SpringAction" >
+        <!--(3)使用静态工厂的方法注入对象,对应下面的配置文件(3)-->
+        <property name="staticFactoryDao" ref="staticFactoryDao"></property>
+    </bean>
+            <!--(3)此处获取对象的方式是从工厂类中获取静态方法-->
+    <bean name="staticFactoryDao" class="com.allen.boot.inject.staticfactory.StaticDaoFactory" factory-method="getStaticFactoryDaoImpl"></bean>
+</beans>
