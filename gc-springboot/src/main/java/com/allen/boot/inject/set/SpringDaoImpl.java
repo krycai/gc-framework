@@ -21,4 +21,9 @@ public class SpringDaoImpl implements SpringDao {
     public void saveFactory() {
         System.out.println("========静态工厂===============");
     }
+
+    @Override
+    public void insertFactory() {
+        System.out.println("=-=-= 工厂方法 ---====---");
+    }
 }
