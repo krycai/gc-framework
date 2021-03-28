@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  *
  * 能干什么：来定制和修改BeanFactory的内容，如覆盖或添加属性
  */
-@Component
+//@Component
 public class AllenBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
     public AllenBeanFactoryPostProcessor() {

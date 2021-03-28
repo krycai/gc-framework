@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * 加载顺序： BeanNameAware  --》BeanFactoryAware --》InitializingBean
  *
  */
-@Component
+//@Component
 public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware, DisposableBean {
 
     private String name;
