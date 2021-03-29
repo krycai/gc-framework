@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * 加载顺序： BeanNameAware  --》BeanFactoryAware --》InitializingBean
  *
  */
-//@Component
+@Component
 public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware, DisposableBean {
 
     private String name;
@@ -19,11 +19,16 @@ public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware
 
     private Integer money;
 
+    public Person() {
+        System.out.println("第二步：执行Person类的无参构造函数");
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        System.out.println("第三步：调用setName方法");
         this.name = name;
     }
 
@@ -32,6 +37,7 @@ public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware
     }
 
     public void setAge(Integer age) {
+        System.out.println("第四步：调用setAge方法");
         this.age = age;
     }
 
@@ -46,6 +52,7 @@ public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         System.out.println("BeanFactoryAware 的 setBeanFactory方法");
+
     }
 
     @Override
@@ -60,6 +67,6 @@ public class Person implements InitializingBean, BeanFactoryAware, BeanNameAware
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("InitializingBean 的 afterPropertiesSet 的方法");
+        System.out.println("第六步：调用 InitializingBean的 afterPropertiesSet方法");
     }
 }

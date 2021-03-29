@@ -5,7 +5,7 @@ package com.allen.boot.po;
  */
 public class User {
 
-    private Person person;
+    private People people;
 
     private String name;
 
@@ -13,12 +13,12 @@ public class User {
 
     private String hello;
 
-    public Person getPerson() {
-        return person;
+    public People getPeople() {
+        return people;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPeople(People people) {
+        this.people = people;
     }
 
     public String getName() {

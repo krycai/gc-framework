@@ -1,6 +1,6 @@
 package com.example;
 
-import com.allen.boot.po.Person;
+import com.allen.boot.po.People;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,7 +16,7 @@ public class SpringTest {
         String resource = "spring-ioc-circular-dependency.xml";
         ApplicationContext context = new ClassPathXmlApplicationContext(resource);
         // 获取ClassA的实例（此时会发生循环依赖）
-        Person classA = (Person) context.getBean(Person.class);
+        People classA = (People) context.getBean(People.class);
     }
 
 }

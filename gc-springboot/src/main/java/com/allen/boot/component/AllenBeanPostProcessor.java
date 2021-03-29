@@ -2,13 +2,15 @@ package com.allen.boot.component;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by xuguocai on 2021/3/26 9:26
  *
- * Bean后置处理器
+ * Bean后置处理器  ，是对生成的Bean对象进行修改。
  *
  */
+//@Component
 public class AllenBeanPostProcessor implements BeanPostProcessor {
 
     public AllenBeanPostProcessor(){
@@ -24,7 +26,7 @@ public class AllenBeanPostProcessor implements BeanPostProcessor {
      */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("AllenBeanPostProcessor 的 postProcessBeforeInitialization 的方法");
+        System.out.println("第五步：调用 BeanPostProcessor，对象.调用初始化方法之前postProcessBeforeInitialization的数据： " );
         return bean;
     }
 
@@ -37,7 +39,7 @@ public class AllenBeanPostProcessor implements BeanPostProcessor {
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("AllenBeanPostProcessor 的 postProcessAfterInitialization 的方法");
+        System.out.println("第八步：BeanPostProcessor，对象.调用初始化方法之后postProcessAfterInitialization的数据：" );
         return bean;
     }
 }

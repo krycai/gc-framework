@@ -3,7 +3,7 @@ package com.allen.boot.po;
 /**
  * Created by xuguocai on 2021/3/26 17:15
  */
-public class Person {
+public class People {
 
     private User user;
 
