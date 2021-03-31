@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gc-dubbo-provider
+dubbo:
+  application:
+    name: gc-dubbo-provider
+  registry:
+    address: zookeeper://192.168.240.15:2181?backup=192.168.240.15:2182,192.168.240.15:2183
+    # 读者请自行更改zookeeper地址
+    protocol: zookeeper
+    check: false
+  protocol:
+    name: dubbo
+    port: 30003
+#  monitor:
+#    protocol: register
+#  consumer:
+#    check: false
+#    timeout: 60000
+#  config-center:
+#    timeout: 4000
+  provider:
+    timeout: 10000
+    retries: 2
+
+server:
+  port: 8061
+
+

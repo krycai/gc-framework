@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: gc-dubbo-consumer
+dubbo:
+  application:
+    name:  gc-dubbo-consumer
+  registry:
+    address: zookeeper://192.168.240.15:2181?backup=192.168.240.15:2182,192.168.240.15:2183
+    # 读者请换成自己的zookeeperip
+    protocol: zookeeper
+    check: false
+  monitor:
+    protocol: register
+  consumer:
+    check:  false
+    timeout: 60000
+
+server:
+  port: 8062
+
