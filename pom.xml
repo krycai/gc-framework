@@ -38,6 +38,7 @@
         <module>gc-elasticsearch</module>
         <module>gc-docker</module>
         <module>gc-springcloud</module>
+        <module>gc-apollo</module>
     </modules>
 
     <properties>
