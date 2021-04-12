@@ -1,5 +1,8 @@
 package com.allen.netty.client;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * Created by xuguocai on 2021/4/12 17:24
  */

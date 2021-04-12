@@ -1,6 +1,6 @@
 package com.allen.netty.server.config;
 
-import com.allen.netty.handler.NettyServerHandler;
+import com.allen.netty.server.handler.NettyServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
