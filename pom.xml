@@ -39,6 +39,7 @@
         <module>gc-docker</module>
         <module>gc-springcloud</module>
         <module>gc-apollo</module>
+        <module>gc-netty</module>
     </modules>
 
     <properties>
