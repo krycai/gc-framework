@@ -35,11 +35,13 @@ public class NettyServer {
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup);
+            // 选择Nio
             serverBootstrap.channel(NioServerSocketChannel.class);
             serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
             serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
             serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
             serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+            // 自定义
             serverBootstrap.childHandler(new NettyServerInitializer());
             // 绑定端口,开始接收进来的连接
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();

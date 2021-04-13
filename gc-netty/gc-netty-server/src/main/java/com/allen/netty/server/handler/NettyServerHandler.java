@@ -16,6 +16,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     /** 日志 */
     private Logger log = LoggerFactory.getLogger(NettyServerHandler.class);
 
+    /**
+     * 客户端数据到来时触发
+     */
 //    @Override
     protected void channelRead(ChannelHandlerContext ctx, String msg) {
         StringBuilder sb = null;
@@ -28,6 +31,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             sb.append(result);
             sb.append("解析成功");
             sb.append("\n");
+            log.info("NettyServerHandler的信息:{}",sb);
             ctx.writeAndFlush(sb);
         } catch (Exception e) {
             String errorCode = "-1\n";
@@ -43,6 +47,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         log.info("收到客户端[ip:" + clientIp + "]连接");
     }
 
+    /**
+     * 发生异常时触发
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         // 当出现异常就关闭连接

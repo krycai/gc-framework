@@ -14,6 +14,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<String> {
         System.out.println("收到服务端消息: " + msg);
     }
 
+//    @Override
+    public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        super.channelRead(ctx, msg);
+        System.out.println("收到服务端消息: " + msg);
+    }
+
     @Override
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         System.out.println("---------");

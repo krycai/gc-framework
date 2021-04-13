@@ -1,5 +1,6 @@
-package com.allen.netty.client.config;
+package com.allen.netty.client;
 
+import com.allen.netty.client.config.NettyClientInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -57,7 +58,7 @@ public class NettyClient {
      */
     public static void main(String[] args) {
         String host = "127.0.0.1";
-        int port = 8000;
+        int port = 10194;
         NettyClient nettyClient = new NettyClient(host, port);
         nettyClient.connect();
     }
