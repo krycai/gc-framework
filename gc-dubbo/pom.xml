@@ -16,7 +16,8 @@
 		<module>gc-dubbo-consumer</module>
 		<module>gc-dubbo-provider</module>
 		<module>gc-dubbo-api</module>
-	</modules>
+        <module>gc-dubbo-spi</module>
+    </modules>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
