@@ -39,6 +39,8 @@
         <module>gc-springcloud</module>
         <module>gc-apollo</module>
         <module>gc-netty</module>
+        <module>gc-internet</module>
+        <module>gc-document</module>
     </modules>
 
     <properties>
