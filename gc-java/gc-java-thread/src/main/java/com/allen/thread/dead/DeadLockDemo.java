@@ -20,11 +20,11 @@ public class DeadLockDemo {
         Thread threadA = new Thread(new Runnable() {
             public void run() {
                 synchronized (resourceA){
-                    System.out.println("获取 resourceA 锁");
+                    System.out.println("获取 resourceA 锁:"+Thread.currentThread().getName());
                     try {
                         Thread.sleep(2000);
                         synchronized (resourceB){
-                            System.out.println("获取 resourceB 锁");
+                            System.out.println("获取 resourceB 锁："+Thread.currentThread().getName());
                         }
                     }catch (Exception e){
                         System.out.println("抛出异常,{}"+e.getMessage());
@@ -37,9 +37,9 @@ public class DeadLockDemo {
         Thread threadB = new Thread(new Runnable() {
             public void run() {
                 synchronized (resourceB){
-                    System.out.println("获取 resourceA 锁");
+                    System.out.println("获取 resourceA 锁:"+Thread.currentThread().getName());
                     synchronized (resourceA){
-                        System.out.println("获取 resourceB 锁");
+                        System.out.println("获取 resourceB 锁:"+Thread.currentThread().getName());
                     }
                 }
             }
