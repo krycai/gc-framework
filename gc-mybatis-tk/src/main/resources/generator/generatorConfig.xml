@@ -36,10 +36,15 @@
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
 
-        <table tableName="qq_apply_config">
+        <table tableName="qy_depart_user">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
+
+<!--        <table tableName="qy_depart">-->
+<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
 <!--        <table tableName="sys_menu">-->
 <!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->

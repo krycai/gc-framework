@@ -19,7 +19,7 @@ import java.util.Arrays;
  *
  *
  */
-public class MaoPaoTest {
+public class BubbleTest {
 
     @Test
     public void test1(){
