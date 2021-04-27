@@ -22,13 +22,17 @@ kafka在所有broker中选出一个controller，所有Partition的Leader选举�
 
 ## LeaderAndIsrRequest响应过程
 
-1.若请求中controllerEpoch小于当前最新的controllerEpoch，则直接返回ErrorMapping.StaleControllerEpochCode。2.对于请求中partitionStateInfos中的每一个元素，即（(topic, partitionId), partitionStateInfo)：
+1.若请求中controllerEpoch小于当前最新的controllerEpoch，则直接返回ErrorMapping.StaleControllerEpochCode。
+
+2.对于请求中partitionStateInfos中的每一个元素，即（(topic, partitionId), partitionStateInfo)：
 
 2.1 若partitionStateInfo中的leader epoch大于当前ReplicManager中存储的(topic, partitionId)对应的partition的leader epoch，则：
 
 2.1.1 若当前brokerid（或者说replica id）在partitionStateInfo中，则将该partition及partitionStateInfo存入一个名为partitionState的HashMap中
 
-2.1.2否则说明该Broker不在该Partition分配的Replica list中，将该信息记录于log中2.2否则将相应的Error code（ErrorMapping.StaleLeaderEpochCode）存入Response中
+2.1.2否则说明该Broker不在该Partition分配的Replica list中，将该信息记录于log中
+
+2.2否则将相应的Error code（ErrorMapping.StaleLeaderEpochCode）存入Response中
 
 3.筛选出partitionState中Leader与当前Broker ID相等的所有记录存入partitionsTobeLeader中，其它记录存入partitionsToBeFollower中。
 
