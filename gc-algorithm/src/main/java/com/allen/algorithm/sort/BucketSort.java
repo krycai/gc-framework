@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 /**
- * @author xuguocai on 2021/4/26 14:03  桶排序
+ * @author xuguocai on 2021/4/26 14:03  桶排序  ---》思想类似于 计数排序 处理
  */
 public class BucketSort implements IArraySort{
 
@@ -28,22 +28,32 @@ public class BucketSort implements IArraySort{
         return bucketSort(arr, 5);
     }
 
+    /**
+     *
+     * @param arr  数组
+     * @param bucketSize  桶大小
+     * @return
+     * @throws Exception
+     */
     private int[] bucketSort(int[] arr, int bucketSize) throws Exception {
         if (arr.length == 0) {
             return arr;
         }
-
+        // 定义最大及最小的 值
         int minValue = arr[0];
         int maxValue = arr[0];
         for (int value : arr) {
             if (value < minValue) {
+                // 取出最小的值
                 minValue = value;
             } else if (value > maxValue) {
+                // 取出最大的值
                 maxValue = value;
             }
         }
-
+        // 定义桶次数
         int bucketCount = (int) Math.floor((maxValue - minValue) / bucketSize) + 1;
+        // 定义二维数组
         int[][] buckets = new int[bucketCount][0];
 
         // 利用映射函数将数据分配到各个桶中
@@ -74,7 +84,9 @@ public class BucketSort implements IArraySort{
      * @param value
      */
     private int[] arrAppend(int[] arr, int value) {
+        // 扩容一位
         arr = Arrays.copyOf(arr, arr.length + 1);
+        // 给数组最后一位赋值 元素
         arr[arr.length - 1] = value;
         return arr;
     }

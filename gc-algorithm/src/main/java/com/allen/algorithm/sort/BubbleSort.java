@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 /**
- * @author xuguocai on 2021/4/26 14:42 冒泡排序
+ * @author xuguocai on 2021/4/26 14:42 冒泡排序  --> 设置遍历次数  接着遍历左右大小  然后交互左右位置。
  */
 public class BubbleSort implements IArraySort {
 

@@ -28,14 +28,14 @@ public class InsertSort implements IArraySort {
             // 记录要插入的数据
             int tmp = arr[i];
 
-            // 从已经排序的序列最右边的开始比较，找到比其小的数
+            // 从已经排序的序列最右边的开始 从右到左 比较，找到比其小的数
             int j = i;
             while (j > 0 && tmp < arr[j - 1]) {
                 arr[j] = arr[j - 1];
                 j--;
             }
 
-            // 存在比其小的数，插入
+            // 此处注意 j-- 后得到 j 的值，然后 j 于 i 交换位置
             if (j != i) {
                 arr[j] = tmp;
             }
