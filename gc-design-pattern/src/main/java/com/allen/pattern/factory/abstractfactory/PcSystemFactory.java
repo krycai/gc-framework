@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
  * @Description TODO
  * @Author Xu
  * @Date 2019/3/19 19:04
+ *
+ * PC端 ---》具体工厂  创建PC端相关的产品
  **/
 @Slf4j
 public class PcSystemFactory implements SystemFactory {

@@ -14,7 +14,7 @@ public class HeapSort implements IArraySort {
         int[] arr = {49,38,65,97,76,13,27,49,55,4};
         System.out.println(Arrays.toString(arr));
         int[] sort = sort(arr);
-        System.out.println("---"+Arrays.toString(sort));
+        System.out.println(Arrays.toString(sort));
     }
 
     @Override
@@ -35,6 +35,7 @@ public class HeapSort implements IArraySort {
     }
 
     private void buildMaxHeap(int[] arr, int len) {
+        // 取中间的下标：len / 2
         for (int i = (int) Math.floor(len / 2); i >= 0; i--) {
             heapify(arr, i, len);
         }

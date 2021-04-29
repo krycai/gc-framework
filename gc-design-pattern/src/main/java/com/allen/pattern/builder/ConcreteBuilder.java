@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName ConcreteBuilder
- * @Description 装机人员（具体）
+ * @Description 装机人员（具体）  具体建造者。实现/继承抽象接口/类，构建和装配各个部件。
  * @Author Xu
  * @Date 2019/3/20 15:33
  **/

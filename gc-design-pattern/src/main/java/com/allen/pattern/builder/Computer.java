@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @ClassName Computer
- * @Description 组装电脑:定义具体产品类（Product）
+ * @Description 组装电脑:定义具体产品类（Product）   产品角色。一个具体的产品对象。
  * @Author Xu
  * @Date 2019/3/20 15:27
  **/

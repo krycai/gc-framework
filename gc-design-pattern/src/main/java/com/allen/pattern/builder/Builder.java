@@ -2,7 +2,7 @@ package com.allen.pattern.builder;
 
 /**
  * @ClassName Builder
- * @Description 装机人员 组装命令：组装电脑的过程
+ * @Description 装机人员 组装命令：组装电脑的过程   抽象建造者。它声明为创建一个Product对象的各个部件指定的抽象接口/类。
  * @Author Xu
  * @Date 2019/3/20 15:22
  **/

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
  * @Description TODO
  * @Author Xu
  * @Date 2019/3/19 18:58
+ *
+ *PC端的界面  --》具体实现类  具体产品
  **/
 @Slf4j
 public class PcUIContronller implements UIContronller {

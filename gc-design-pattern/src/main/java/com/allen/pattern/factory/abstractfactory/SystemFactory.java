@@ -9,6 +9,9 @@ package com.allen.pattern.factory.abstractfactory;
  * @Author Xu
  * @Date 2019/3/19
  * 18:59
+ *
+ * 抽象工厂。抽象工厂定义了一个接口，所有的具体工厂都必须实现此接口，这个接口包含了一组方法用来生产产品。 SystemFactory：抽象工厂
+ *
  **/
 public interface SystemFactory {
 

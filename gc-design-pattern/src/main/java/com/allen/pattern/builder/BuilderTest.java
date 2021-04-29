@@ -20,10 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 public class BuilderTest {
 
     public static void main(String[] args){
+        // 定义组装类
         Builder builder = new ConcreteBuilder();
+        // 定义指挥
         Director director = new Director();
+        // 指挥 指导 组装
         director.construct(builder);
-
+        // 查看是否组装成功
         Computer computer = builder.getComputer();
         computer.show();
     }
