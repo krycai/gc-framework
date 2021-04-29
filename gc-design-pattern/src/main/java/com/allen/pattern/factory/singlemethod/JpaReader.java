@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName JpaReader
- * @Description TODO
+ * @Description TODO  具体产品。
  * @Author Xu
  * @Date 2019/3/19 17:05
  **/

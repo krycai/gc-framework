@@ -10,8 +10,9 @@ package com.allen.pattern.factory.singlemethod;
 public class SingleMethodFactoryTest {
 
     public static void main(String[] args){
-        // 读取jpg
+        // 创建具体工厂类
         ReaderFactory factory = new JapReaderFactory();
+        // 工厂创建对象
         Reader reader = factory.getReader();
         reader.read();
 

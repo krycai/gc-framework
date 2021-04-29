@@ -19,6 +19,8 @@ import java.util.ArrayList;
  *  2、简化对象的创建，使得创建对象就像我们在编辑文档时的复制粘贴一样简单
  * @Author Xu
  * @Date 2019/3/22 10:06
+ *
+ * 抽象原型类。声明克隆自身的接口。
  **/
 @Slf4j
 public class Prototype implements Cloneable{
