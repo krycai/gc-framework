@@ -73,6 +73,8 @@
   
   创建主键索引通常使用 PRIMARY KEY 关键字。不能使用 CREATE INDEX 语句创建主键索引。
   
+     ALTER TABLE `table_name` ADD PRIMARY KEY ( `column` ) 
+  
   **4) 空间索引**
   
   空间索引是对**空间数据类型**的字段建立的索引，使用 **SPATIAL** 关键字进行扩展。
@@ -98,6 +100,8 @@
  不过对于大容量的数据表，生成全文索引非常消耗时间和硬盘空间。
  
  创建全文索引使用 FULLTEXT 关键字。
+ 
+    ALTER TABLE `table_name` ADD FULLTEXT ( `column`) 
  
  例 4
  
