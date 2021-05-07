@@ -15,11 +15,11 @@ public class TreeDepthTest {
     @Test
     public void test() {
         TreeNode root = TreeNode.createNode();
-        levelTraverse(root);
+        postOrderTraverse12(root);
     }
 
     /**
-     * 前序遍历  --- 递归版本
+     * 前序遍历  --- 递归版本   根结点 ---> 左子树 ---> 右子树
      * @param root
      */
     public void preOrderTraverse1(TreeNode root) {
@@ -57,7 +57,7 @@ public class TreeDepthTest {
     }
 
     /**
-     * 中序遍历  --- 递归版本
+     * 中序遍历  --- 递归版本   左子树---> 根结点 ---> 右子树
      * @param root
      */
     public void inOrderTraverse1(TreeNode root) {
@@ -88,7 +88,18 @@ public class TreeDepthTest {
     }
 
     /**
-     * 后序遍历 --- 递归版本
+     * 后序遍历 --- 递归版本  左子树 ---> 右子树 ---> 根结点
+     *  首先，遍历左子树
+     *    当前节点的左子树不存在，则遍历当前节点的右子树；
+     *    当前节点的左子树存在，则遍历当前节点的左子树；
+     *
+     *  接着上面的思路，
+     *    当前节点没有左子树，则看查有木有右子树，没有左、右子树，则输出当前节点的值
+     *
+     *  最后
+     *    左、右子树递归（由上往下、由下往上）处理，并输出值。
+     *
+     *
      * @param root
      */
     public void postOrderTraverse1(TreeNode root) {
@@ -112,28 +123,32 @@ public class TreeDepthTest {
         Stack<TreeNode> stack = new Stack<>();
         List<Integer> list = new LinkedList<>();
         TreeNode lastVisited = null;
+
         while(!stack.isEmpty() || root != null) {
             if (root != null) {
+                // 节点存在，则放进栈中并继续获取左节点
                 stack.push(root);
                 root = root.left;
-            } else {
+            } else {// 栈 先进后出 特点
                 TreeNode node = stack.peek();
+                // 判断当前节点是否存在 右节点，存在则继续遍历右节点
                 if (node.right != null && lastVisited != node.right) {
                     root = node.right;
                 } else {
+                    System.out.print(node.value+"  ");
                     list.add(node.value);
                     lastVisited = stack.pop();
                 }
             }
         }
-        for (Integer item : list){
-            System.out.print(item+"  ");
-        }
+//        for (Integer item : list){
+//            System.out.print(item+"  ");
+//        }
         return list;
     }
 
     /**
-     * 层次遍历
+     * 层次遍历  只需按层次遍历即可
      *
      * 层次遍历的代码比较简单，只需要一个队列即可，先在队列中加入根结点。之后对于任意一个结点来说，在其出队列的时候，访问之。同时如果左孩子和右孩子有不为空的，入队列。
      *
@@ -144,8 +159,10 @@ public class TreeDepthTest {
             return;
         }
         LinkedList<TreeNode> queue = new LinkedList<>();
+        // 添加到链表后面
         queue.offer(root);
         while (!queue.isEmpty()) {
+            // 从链表取出第一个元素
             TreeNode node = queue.poll();
             System.out.print(node.value+"  ");
             if (node.left != null) {

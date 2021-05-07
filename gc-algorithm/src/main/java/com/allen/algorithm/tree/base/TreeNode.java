@@ -66,6 +66,65 @@ public class TreeNode {
         return head;
     }
 
+    public static TreeNode createNode2(){
+        TreeNode head = new TreeNode(9);
+
+        TreeNode second = new TreeNode(5);
+        TreeNode three = new TreeNode(15);
+
+        TreeNode four = new TreeNode(4);
+        TreeNode five = new TreeNode(7);
+        TreeNode six = new TreeNode(11);
+        TreeNode seven = new TreeNode(21);
+        TreeNode eight = new TreeNode(14);
+
+        head.right = three;
+        head.left = second;
+
+        second.right = five;
+        second.left = four;
+
+        three.right = seven;
+        three.left = six;
+
+        six.right = eight ;
+
+        return head;
+    }
+
+
+    public static TreeNode createNode3(){
+        TreeNode head = new TreeNode(9);
+
+        TreeNode second = new TreeNode(5);
+        TreeNode three = new TreeNode(15);
+        head.right = three;
+        head.left = second;
+
+        TreeNode four = new TreeNode(4);
+        TreeNode five = new TreeNode(7);
+        second.right = five;
+        second.left = four;
+
+        TreeNode six = new TreeNode(11);
+        TreeNode seven = new TreeNode(21);
+        three.right = seven;
+        three.left = six;
+
+        TreeNode eight = new TreeNode(14);
+        six.right = eight ;
+
+
+
+
+
+
+
+
+
+        return head;
+    }
+
     @Override
     public String toString() {
         return "TreeNode{" +
