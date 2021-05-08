@@ -23,8 +23,8 @@ public class BridgeTest {
 
     public static void main(String[] args){
         // 将类与接口实现类连接在一起， 即桥接
-        Shape shape = new Circle(100,new RedCircle());
-        Shape white = new Circle(300,new WhiteCircle());
+        AbstractShape shape = new RefinedAbstractionCircle(100,new ConcreteImplementorRedCircle());
+        AbstractShape white = new RefinedAbstractionCircle(300,new ConcreteImplementorWhiteCircle());
 
         shape.draw();
 

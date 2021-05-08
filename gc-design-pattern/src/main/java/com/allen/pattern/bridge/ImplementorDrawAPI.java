@@ -11,7 +11,11 @@ package com.allen.pattern.bridge;
  *  桥接模式的引入会增加系统的理解与设计难度，由于聚合关联关系建立在抽象层，要求开发者针对抽象进行设计与编程。
  * @Author Xu
  * @Date 2019/3/26 16:53
+ *
+ *  实现类接口
  **/
-public interface DrawAPI {
+public interface ImplementorDrawAPI {
+
     public void drawCircle(String type,int y);
+
 }

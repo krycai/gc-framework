@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName Adaptee
- * @Description 源目标====被适配者
+ * @Description 源目标====被适配者  适配者类 。需要适配的类。
  * @Author Xu
  * @Date 2019/3/20 16:28
  **/
