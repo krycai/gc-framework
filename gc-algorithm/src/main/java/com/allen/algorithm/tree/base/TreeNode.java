@@ -112,7 +112,7 @@ public class TreeNode {
         three.left = six;
 
         TreeNode eight = new TreeNode(14);
-        six.right = eight ;
+        six.left = eight ;
 
 
 
@@ -124,6 +124,59 @@ public class TreeNode {
 
         return head;
     }
+
+    public static TreeNode createNode4(){
+        TreeNode head = new TreeNode(1);
+
+        TreeNode second = new TreeNode(2);
+        TreeNode three = new TreeNode(3);
+        head.right = three;
+        head.left = second;
+
+        TreeNode four = new TreeNode(4);
+        TreeNode five = new TreeNode(5);
+        second.right = five;
+        second.left = four;
+
+        TreeNode six = new TreeNode(6);
+        TreeNode seven = new TreeNode(7);
+        three.right = seven;
+        three.left = six;
+
+        TreeNode eight = new TreeNode(8);
+        TreeNode nine = new TreeNode(9);
+        four.left = eight ;
+        four.right = nine;
+
+        return head;
+    }
+
+    public static TreeNode createNode5(){
+        TreeNode head = new TreeNode(0);
+
+        TreeNode second = new TreeNode(0);
+        TreeNode three = new TreeNode(1);
+        head.right = three;
+        head.left = second;
+
+        TreeNode four = new TreeNode(1);
+        TreeNode five = new TreeNode(1);
+        second.right = five;
+        second.left = four;
+
+        TreeNode six = new TreeNode(0);
+        TreeNode seven = new TreeNode(0);
+        three.right = seven;
+        three.left = six;
+
+        TreeNode eight = new TreeNode(0);
+        TreeNode nine = new TreeNode(1);
+        four.left = eight ;
+        four.right = nine;
+
+        return head;
+    }
+
 
     @Override
     public String toString() {
