@@ -1,4 +1,4 @@
-package com.allen.java.map;
+package com.allen.jvm.map;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.allen.java.list;
+package com.allen.jvm.list;
 
 import java.util.Iterator;
 import java.util.LinkedList;

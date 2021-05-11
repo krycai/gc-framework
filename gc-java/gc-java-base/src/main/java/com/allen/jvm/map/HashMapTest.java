@@ -1,4 +1,4 @@
-package com.allen.java.map;
+package com.allen.jvm.map;
 
 import org.junit.Test;
 

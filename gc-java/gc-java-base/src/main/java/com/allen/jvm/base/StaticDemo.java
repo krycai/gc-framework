@@ -1,4 +1,4 @@
-package com.allen.java.base;
+package com.allen.jvm.base;
 
 /**
  * Created by xuguocai on 2021/2/9 10:46

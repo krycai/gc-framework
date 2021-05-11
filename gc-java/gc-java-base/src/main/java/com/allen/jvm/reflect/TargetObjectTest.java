@@ -1,4 +1,4 @@
-package com.allen.java.reflect;
+package com.allen.jvm.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +21,7 @@ public class TargetObjectTest {
         /**
          * 获取TargetObject类的Class对象并且创建TargetObject类实例
          */
-        Class<?> tagetClass = Class.forName("com.allen.java.reflect.TargetObject");
+        Class<?> tagetClass = Class.forName("com.allen.jvm.reflect.TargetObject");
         TargetObject targetObject = (TargetObject) tagetClass.newInstance();
         /**
          * 获取所有类中所有定义的方法

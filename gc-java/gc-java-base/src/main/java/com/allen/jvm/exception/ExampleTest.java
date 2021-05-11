@@ -1,4 +1,4 @@
-package com.allen.java.exception;
+package com.allen.jvm.exception;
 
 public class ExampleTest {
 
