@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author xuguocai on 2021/5/20 11:20
+ * @author xuguocai on 2021/5/20 11:20  用户会话存档的解密操作
  */
 public class RSAUtil {
 
@@ -182,6 +182,7 @@ public class RSAUtil {
 	 * @throws Exception
 	 */
 	public static byte[] decryptByPriKey(byte[] data, byte[] priKey) throws Exception {
+		// PKCS1 转 PKCS8
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(priKey);
 		KeyFactory keyFactory = KeyFactory.getInstance(RSA_KEY_ALGORITHM);
