@@ -40,7 +40,7 @@ public class AsciiChange {
         System.out.println(integer);
         // 十进制再转为8进制
         String toHexString = Integer.toOctalString(integer);
-        System.out.println("0x"+toHexString);
+        System.out.println(toHexString);
     }
 
 }
