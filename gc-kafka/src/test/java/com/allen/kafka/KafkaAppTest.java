@@ -19,7 +19,7 @@ public class KafkaAppTest {
 
     @Test
     public void send(){
-        for (int i = 0;i < 1000000;i++){
+        for (int i = 0;i < 10000;i++){
             String msg = "测试Kafka发送数据次数: "+i+" 次";
             allenKafkaProducer.send("allen-test-topic",msg);
         }

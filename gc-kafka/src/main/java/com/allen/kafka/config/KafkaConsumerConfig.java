@@ -20,8 +20,8 @@ import java.util.Map;
 /**
  * @Author Allen 2021/5/22 19:32  消费者的一些配置，若是引用了 spring-kafka ，此处可以忽略不计。此处用于学习demo
  **/
-@Configuration
-@EnableKafka
+//@Configuration
+//@EnableKafka
 public class KafkaConsumerConfig {
 
     private Logger log = LoggerFactory.getLogger(KafkaConsumerConfig.class);

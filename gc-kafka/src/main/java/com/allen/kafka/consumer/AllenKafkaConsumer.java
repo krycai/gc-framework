@@ -30,7 +30,7 @@ public class AllenKafkaConsumer {
      * @param record
      * @param ack
      */
-    @KafkaListener(containerFactory = "ackContainerFactory",topics = "allen-test-topic")
+//    @KafkaListener(containerFactory = "ackContainerFactory",topics = "allen-test-topic")
     public void pullMessage(ConsumerRecord record, Acknowledgment ack) {
 
         Optional<?> kafkaMessage = Optional.ofNullable(record.value());
