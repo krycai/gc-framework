@@ -5,8 +5,6 @@ import com.allen.redis.core.repository.RedisRepository;
 import com.allen.redis.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 /**
  * @author xuguocai on 2021/6/4 16:43  缓存雪崩
  */

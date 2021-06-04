@@ -47,4 +47,4 @@
 
 * 4、不同的key，设置不同的过期时间，让缓存失效的时间点尽量均匀。
 
-更多Redis相关知识，请访问Redis使用教程栏目！
+https://www.php.cn/redis/424918.html
