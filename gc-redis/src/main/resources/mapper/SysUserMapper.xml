@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allen.redis.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.allen.redis.po.SysUser">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="admin_flag" jdbcType="BIT" property="adminFlag" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+  </resultMap>
+
+  <!-- 查询有效数据列表，可分页查询 -->
+  <select id="findUserPage" resultMap="BaseResultMap">
+    select
+      a.*
+    from sys_user a
+    WHERE a.del_flag = '0'
+    <if test="loginName != null and loginName != ''">
+      AND a.login_name like CONCAT('%', #{loginName}, '%')
+    </if>
+    <if test="name != null and name != ''">
+      AND a.name like CONCAT('%', #{name}, '%')
+    </if>
+    order by a.create_time desc
+  </select>
+
+  <!-- 删除用户和角色关联表数据 -->
+  <delete id="deleteUserRole">
+        DELETE FROM sys_user_role
+        WHERE user_id = #{userId}
+    </delete>
+
+  <select id="getUserRoleByUserId" resultType="com.allen.sys.model.po.SysRole">
+    	SELECT
+			b.id,
+			b.name,
+			b.code,
+			b.enabled,
+			b.remarks
+		FROM
+			sys_user_role a
+		INNER JOIN sys_role b ON a.role_id = b.id and b.del_flag = '0'
+		WHERE
+			a.user_id = #{userId}
+    </select>
+
+    <select id="ssoLogin" resultMap="BaseResultMap">
+    	SELECT
+			a.*
+		FROM
+			sys_user a
+		WHERE
+		  a.del_flag = 0
+		  and a.login_name = #{loginName}
+		  and a.password = #{password}
+    </select>
+
+    <select id="getUserMsgByToken" resultMap="BaseResultMap">
+    	SELECT
+			a.*
+		FROM
+			sys_user a , sys_user_login l
+		WHERE
+		  a.del_flag = 0 and l.user_id = a.id
+		  and l.token = #{token}
+    </select>
+
+</mapper>

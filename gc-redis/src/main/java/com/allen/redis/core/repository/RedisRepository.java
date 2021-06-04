@@ -18,10 +18,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
- * Created by xuguocai on 2021/3/15 9:43  对外提供的调用窗口
+ * Created by xuguocai on 2021/3/15 9:43  对外提供的调用窗口  redis 集群 ，可以直接用redisson自带分布式锁
  */
 @Repository
 @DependsOn
@@ -82,6 +83,59 @@ public class RedisRepository {
             LOGGER.info("[redisTemplate redis]放入 缓存  url:{} ========缓存时间为{}秒", key, time);
             return 1L;
         });
+    }
+
+    /**
+     *  通过 setNx 实现分布式锁
+     * @param key  缓存键
+     * @param time  过期时间 如 30 秒
+     * @return
+     */
+    public boolean setNx(final String key,long time){
+        // 利用lambda表达式
+        return (Boolean) redisTemplate.execute((RedisCallback) connection -> {
+            // 对 key 是否设置成功
+            long expireAt = System.currentTimeMillis() + time ;
+            Boolean acquire = connection.setNX(key.getBytes(), String.valueOf(expireAt).getBytes());
+            // 成功设置
+            if (acquire) {
+                return true;
+            } else {
+                // 重试
+                byte[] value = connection.get(key.getBytes());
+
+                if (Objects.nonNull(value) && value.length > 0) {
+                    long expireTime = Long.parseLong(new String(value));
+                    // 如果锁已经过期
+                    if (expireTime < System.currentTimeMillis()) {
+                        // 重新加锁，防止死锁
+                        byte[] oldValue = connection.getSet(key.getBytes(), String.valueOf(System.currentTimeMillis() + time ).getBytes());
+                        return Long.parseLong(new String(oldValue)) < System.currentTimeMillis();
+                    }
+                }
+            }
+            return false;
+        });
+    }
+
+    /**
+     * 通过 setIfAbsent 设置 分布式锁
+     * @param key
+     * @param time  过期时间 如 30 秒
+     * @return
+     */
+    public boolean setNxex(String key,long time) {
+        try {
+            // setIfAbsent 原子性
+            Boolean result = redisTemplate.opsForValue().setIfAbsent(key, 1, time, TimeUnit.SECONDS);
+            if (result != null) {
+                return result;
+            }
+        } catch (Throwable e) {
+            LOGGER.error("setNXEX error", e);
+        }
+
+        return false;
     }
 
     /**
