@@ -67,4 +67,42 @@ public class SnowsLide {
             return cacheValue;
         }
     }
+
+    /**
+     * 队列处理
+     * @param cacheKey
+     * @return
+     */
+    public String producer(String cacheKey){
+        String cacheValue = redisRepository.get(cacheKey);
+        if (StrUtil.isNotBlank(cacheValue)) {
+            return cacheValue;
+        } else {
+            // 丢到 队列
+            kafkaTemplate(cacheKey);
+            // 返回默认值
+            return "";
+        }
+    }
+
+    private void kafkaTemplate(String cacheKey){
+        // 队列处理 如MQ、Kafka
+    }
+
+    //@KafkaListener(topics = {"qywxopen-contactUserMsg"}, groupId = "wxGroup")
+    public void cosumer(String xmlStr){
+        int cacheTime = 30;
+        // 解析，此处demo不详解
+        String cacheKey = xmlStr;
+        if (StrUtil.isBlank(cacheKey)){
+            return;
+        }
+        String cacheValue = sysUserMapper.selectAll().toString();
+        if (StrUtil.isBlank(cacheValue)){
+            return;
+        }
+        redisRepository.setExpire(cacheKey, cacheValue, cacheTime);
+
+    }
+
 }
