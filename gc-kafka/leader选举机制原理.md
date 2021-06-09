@@ -26,11 +26,11 @@ kafka在所有broker中选出一个controller，所有Partition的Leader选举�
 
 2.对于请求中partitionStateInfos中的每一个元素，即（(topic, partitionId), partitionStateInfo)：
 
-2.1 若partitionStateInfo中的leader epoch大于当前ReplicManager中存储的(topic, partitionId)对应的partition的leader epoch，则：
+  2.1 若partitionStateInfo中的leader epoch大于当前ReplicManager中存储的(topic, partitionId)对应的partition的leader epoch，则：
 
-2.1.1 若当前brokerid（或者说replica id）在partitionStateInfo中，则将该partition及partitionStateInfo存入一个名为partitionState的HashMap中
+  2.1.1 若当前brokerid（或者说replica id）在partitionStateInfo中，则将该partition及partitionStateInfo存入一个名为partitionState的HashMap中
 
-2.1.2否则说明该Broker不在该Partition分配的Replica list中，将该信息记录于log中
+  2.1.2否则说明该Broker不在该Partition分配的Replica list中，将该信息记录于log中
 
 2.2否则将相应的Error code（ErrorMapping.StaleLeaderEpochCode）存入Response中
 
