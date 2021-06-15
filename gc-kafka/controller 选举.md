@@ -199,6 +199,14 @@ Kafka 源码非常喜欢用 maybe*** 来命名方法名，以表示那些在特�
 ## 总结
 ![](https://static001.geekbang.org/resource/image/e2/74/e28c134e4fd11ff8ed87933aee88d374.jpg)
 
+## 源码
+
+KafkaController（）【原生字段、辅助字段、统计字段】 --》 process() \ startup() \ maybeResign() \onControllerResignation() -->elect()
+
+ControllerChangeHandler（）【监听器】 --》handleCreation()、handleDeletion() 和 handleDataChange()
+
+
+
 
 https://time.geekbang.org/column/article/238614
 

@@ -36,16 +36,16 @@
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
 
-        <table tableName="kafka_roecod">
+        <table tableName="qy_chat_detail_user">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
 
 
-<!--        <table tableName="qy_depart">-->
-<!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
-<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-<!--        </table>-->
+        <table tableName="qy_chat_detail">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
 
 <!--        <table tableName="sys_menu">-->
 <!--            &lt;!&ndash;mysql 配置&ndash;&gt;-->
