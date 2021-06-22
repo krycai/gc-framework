@@ -12,6 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ConcreteObserver1 implements Observer {
     @Override
     public void update() {
-      log.info("观察者对象1正在执行");
+      log.info("观察者对象1正在观察");
     }
 }

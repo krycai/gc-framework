@@ -1,5 +1,7 @@
 package com.allen.pattern.observe;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Vector;
 
 /**
@@ -25,6 +27,7 @@ import java.util.Vector;
  * @Author Xu
  * @Date 2019/4/1 9:32
  **/
+@Slf4j
 public abstract class Subject {
 
     private Vector<Observer> vector = new Vector();
@@ -43,6 +46,7 @@ public abstract class Subject {
 
     // 观察事件处理
     protected void notifyObserver(){
+        log.info("-------》通知相关的观察者《---------");
         for (Observer obj : vector){
             obj.update();
         }

@@ -37,9 +37,6 @@ public class StateTest {
         stop.doAction(context);
         log.info("开始执行停止操作："+context.getState().toString());
 
-
-
-
     }
 
 }

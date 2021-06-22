@@ -24,10 +24,12 @@ public class MementoTest {
         Originator originator = new Originator();
         originator.setStatus("发起者状态");
         log.info("初始状态==============="+originator.getStatus());
+
         Caretaker caretaker = new Caretaker();
         caretaker.setMemento(originator.createMemento());
         originator.setStatus("发起者状态2");
         log.info("改变后的状态========"+originator.getStatus());
+
         originator.restoreMemento(caretaker.getMemento());
         log.info("恢复后的状态======"+originator.getStatus());
     }

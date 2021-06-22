@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ConcreteSubject extends Subject {
     @Override
     public void doSomething() {
-      log.info("被观察者事件发生");
+      log.info("目标主体发生改变---》被观察者事件发生");
       // 发现有观察的对象，执行
       this.notifyObserver();
     }
