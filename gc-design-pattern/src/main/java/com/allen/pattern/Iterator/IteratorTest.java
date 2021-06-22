@@ -22,11 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 public class IteratorTest {
 
     public static void main(String[] args){
+        // 聚合处理
         Aggregate agg = new ConcreteAggregate();
         agg.add("小花");
         agg.add("小俊");
         agg.add("小仁");
 
+        // 迭代处理
         Iterator it = agg.iterator();
         while (it.hasNext()){
             log.info("==="+it.next());

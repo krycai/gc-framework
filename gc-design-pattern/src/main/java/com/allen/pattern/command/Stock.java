@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @program: pattern
- * @description: 请求类 来充当Receiver。
+ * @description: 请求类 来充当Receiver。   接收者。知道如何实施与执行一个请求相关的操作，任何类都有可能成为一个接收者。
  * @author: allen小哥
  * @Date: 2019-03-30 21:30
  **/

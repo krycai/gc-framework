@@ -2,7 +2,7 @@ package com.allen.pattern.interpreter;
 
 /**
  * @program: pattern
- * @description: 表达式接口
+ * @description: 表达式接口  抽象表达式。声明一个抽象的解释操作，该接口为抽象语法树中所有的节点共享。
  *
  * 解释器模式（Interpreter Pattern）提供了评估语言的语法或表达式的方式，它属于行为型模式。
  *这种模式实现了一个表达式接口，该接口解释一个特定的上下文。这种模式被用在 SQL 解析、符号处理引擎等。

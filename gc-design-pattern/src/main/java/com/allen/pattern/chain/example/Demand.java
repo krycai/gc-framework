@@ -1,4 +1,4 @@
-package com.allen.pattern.chain;
+package com.allen.pattern.chain.example;
 
 /**
  * @ClassName Demand

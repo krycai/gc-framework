@@ -1,4 +1,4 @@
-package com.allen.pattern.chain;
+package com.allen.pattern.chain.example;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2019/3/28 9:48
  **/
 @Slf4j
-public class ManagerHandler extends Handler {
-    public ManagerHandler(int level) {
+public class HandlerManager extends Handler {
+    public HandlerManager(int level) {
         super(1);
     }
 

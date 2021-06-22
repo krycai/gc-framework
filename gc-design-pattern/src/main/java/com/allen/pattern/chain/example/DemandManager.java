@@ -1,4 +1,4 @@
-package com.allen.pattern.chain;
+package com.allen.pattern.chain.example;
 
 /**
  * @ClassName ManagerDemand
@@ -6,7 +6,7 @@ package com.allen.pattern.chain;
  * @Author Xu
  * @Date 2019/3/28 9:36
  **/
-public class ManagerDemand implements Demand {
+public class DemandManager implements Demand {
     @Override
     public int getLevel() {
         return 1;

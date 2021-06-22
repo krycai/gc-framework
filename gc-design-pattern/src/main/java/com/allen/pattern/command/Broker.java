@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @program: pattern
- * @description: Broker 命令调用类
+ * @description: Broker 命令调用类  调用者。要求该命令执行这个请求。
  * @author: allen小哥
  * @Date: 2019-03-30 21:40
  **/

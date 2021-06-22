@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @ClassName ConcreteAggregate
- * @Description 迭代器实现：实现迭代器接口中定义的方法，完成集合的迭代。
+ * @Description 迭代器实现：实现迭代器接口中定义的方法，完成集合的迭代。  具体聚合类。实现方法，返回该聚合对象的迭代器。
  * @Author allen小哥
  * @Date 2019/4/2 9:49
  **/

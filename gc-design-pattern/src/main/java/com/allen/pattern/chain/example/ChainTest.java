@@ -1,4 +1,4 @@
-package com.allen.pattern.chain;
+package com.allen.pattern.chain.example;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,12 +20,12 @@ public class ChainTest {
 
     public static void main(String[] args){
         // 级别低
-        Demand manageMemand = new ManagerDemand();
+        Demand manageMemand = new DemandManager();
         // 级别高
-        Demand bossMemand = new BossDemand();
+        Demand bossMemand = new DemandBoss();
 
-        BossHandler boss = new BossHandler(0);
-        ManagerHandler manager = new ManagerHandler(1);
+        HandlerBoss boss = new HandlerBoss(0);
+        HandlerManager manager = new HandlerManager(1);
 
         // 上传上级
         manager.setNextMessage(boss);

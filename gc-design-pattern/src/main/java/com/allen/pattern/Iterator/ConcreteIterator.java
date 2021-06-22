@@ -9,6 +9,9 @@ import java.util.List;
  * @ClassName ConcreteIterator
  * @Description 具体容器：就是抽象容器的具体实现类，比如List接口的有序列表实现ArrayList，List接口的链表实现LinkList，Set接口的哈希列表的实现HashSet等。
  * @Author allen小哥
+ *
+ * 具体迭代器。利用这个具体的迭代器能够对具体的聚合对象进行遍历。每一个聚合对象都应该对应一个具体的迭代器。
+ *
  * @Date 2019/4/2 9:44
  **/
 @Slf4j
