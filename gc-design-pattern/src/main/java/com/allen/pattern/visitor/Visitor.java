@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * 实现抽象访问者所声明的方法，它影响到访问者访问到一个类后该干什么，要做什么事情。
  *
  * @Author allen小哥
- * @Date 2019/4/1 15:03
+ * @Date 2019/4/1 15:03  具体访问者。实现Visitor申明的每一个操作，每一个操作实现算法的一部分。
  **/
 @Slf4j
 public class Visitor implements IVisitor {

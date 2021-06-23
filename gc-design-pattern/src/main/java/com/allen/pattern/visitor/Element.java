@@ -21,7 +21,7 @@ package com.allen.pattern.visitor;
  *3、违反了依赖倒置原则，依赖了具体类，没有依赖抽象。
  *
  * @Author allen小哥
- * @Date 2019/4/1 14:56
+ * @Date 2019/4/1 14:56   抽象元素。定义一个Accept操作，它以一个访问者为参数。
  **/
 public abstract class Element {
 

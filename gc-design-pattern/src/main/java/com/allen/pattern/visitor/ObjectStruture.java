@@ -13,7 +13,7 @@ import java.util.Random;
  * 一个元素的容器，一般包含一个容纳多个不同类、不同接口的容器，如List、Set、Map等，在项目中一般很少抽象出这个角色。
  *
  * @Author allen小哥
- * @Date 2019/4/1 15:07
+ * @Date 2019/4/1 15:07  对象结构。能够枚举它的元素，可以提供一个高层的接口来允许访问者访问它的元素。
  **/
 @Slf4j
 public class ObjectStruture {
@@ -22,7 +22,7 @@ public class ObjectStruture {
         List list = new ArrayList();
         Random random = new Random();
         for (int i =0; i < 5; i++){
-            int temp = random.nextInt(100);
+            int temp = random.nextInt(10);
             if (temp > 5){
                 list.add(new ConcreteElementA());
             } else {

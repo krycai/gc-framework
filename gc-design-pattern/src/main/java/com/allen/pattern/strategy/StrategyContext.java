@@ -23,22 +23,25 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @Author Xu
  * @Date 2019/3/21 9:32
+ *
+ * 环境类。维护一个Strategy对象的引用，用一个ConcreteStrategy来配置，可定义一个接口来让Strategy访问它的数据。
+ *
  **/
 @Slf4j
-public class MethodStrategy {
+public class StrategyContext {
 
     private Strategy strategy;
 
     public void change(String type){
         switch (type){
             case "eat":
-                strategy = new EatStrategy();
+                strategy = new StrategyEat();
                 break;
             case "sleep":
-                strategy = new SleepStrategy();
+                strategy = new StrategySleep();
                 break;
             case "work":
-                strategy = new WorkStrategy();
+                strategy = new StrategyWork();
                 break;
         }
     }

@@ -22,15 +22,21 @@ import lombok.extern.slf4j.Slf4j;
  * 控制子类的扩展。
  * @Author Xu
  * @Date 2019/3/20 17:56
+ *
+ * 抽象类。实现了一个模板，实现算法的基本骨架，具体子类将重定义primitiveOperation()方法以实现一个算法步骤。
  **/
 @Slf4j
 public abstract class FoodMenu {
 
     // 过程
     final void process(){
+        // 倒油
         pourOil();
+        // 热油
         heatOil();
+        //倒菜
         pourVetetable();
+        //加调味
         addSource();
         fry();
     }

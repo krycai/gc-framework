@@ -9,7 +9,7 @@ package com.allen.pattern.visitor;
  * 抽象类或者接口，声明访问者可以访问哪些元素，具体到程序中就是visit方法中的参数定义哪些对象是可以被访问的。
  *
  * @Author allen小哥
- * @Date 2019/4/1 14:59
+ * @Date 2019/4/1 14:59  抽象访问者。为该对象结构中的ConcreteElement的每一个类声明的一个操作。
  **/
 public interface IVisitor {
 

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @ClassName ConcreteElementB
- * @Description 元素类
+ * @Description 元素类  具体元素 。实现Accept操作。
  *
  * 实现抽象元素类所声明的accept方法，通常都是visitor.visit(this)，基本上已经形成一种定式了
  *
