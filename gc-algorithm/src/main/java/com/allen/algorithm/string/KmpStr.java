@@ -129,7 +129,7 @@ public class KmpStr {
                 j++;
                 k = 0;
                 next[j] = 0;
-            } else if (p[j] == p[k]){     //找到了匹配的,对应next值+1
+            } else if (p[j] == p[k]){     //找到了匹配的,对应next值+1，todo 前面元素与后面元素比较
                 j++;
                 k++;
                 next[j] = k;
